@@ -42,13 +42,13 @@ https://github.com/jiajinz/NLP_Project/tree/main
 </span>
 
 ```
-ie7500_group_project<br>
-├──  .git<br>
-├──  .gitignore<br>
-├──  LICENSE<br>
-├──  README.md<br>
-├──  ie7500_group2_initialProjectProposal--SkyComm-AIDE.docx<br>
-├──  data<br>
-│   ├── \_\_init\_\_.py<br>
+ie7500_group_project
+├──  .git
+├──  .gitignore
+├──  LICENSE
+├──  README.md
+├──  ie7500_group2_initialProjectProposal--SkyComm-AIDE.docx
+├──  data
+│   ├── \_\_init\_\_.py
 │   ├── mental_health_sentiment.csv
 ```
