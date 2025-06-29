@@ -37,9 +37,7 @@ https://github.com/jiajinz/NLP_Project/tree/main
 
 
 ### Repository Structure
-<span style="color:red">
-<p>We need to update this structure prior to submission.</p>
-</span>
+To update the structure, `tree .` within the top-level of the repository, then copy-paste the output into the code block below.
 
 ```
 ├── LICENSE
