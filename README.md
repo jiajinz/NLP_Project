@@ -37,8 +37,6 @@ https://github.com/jiajinz/NLP_Project/tree/main
 
 
 ### Repository Structure
-To update the structure, `tree .` within the top-level of the repository, then copy-paste the output into the code block below.
-
 ```
 ├── LICENSE
 ├── README.md
@@ -53,3 +51,4 @@ To update the structure, `tree .` within the top-level of the repository, then c
 │   └── initial_project_notebook.ipynb
 └── requirements.txt
 ```
+Note: To get the most up-to-date repository structure, run `tree .` within the top-level of the repository.
