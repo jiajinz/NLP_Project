@@ -6,7 +6,7 @@
 This project explores how modern NLP techniques can support mental health screening and analysis with the aim to build a robust, fine-tuned NLP model capable of detecting and classifying mental health-related sentiments expressed in short text (e.g., social media posts, journal entries, etc.). The model will predict one of several mental health categories — including Anxiety, Depression, Suicidal Ideation, Stress, Bipolar Disorder, Personality Disorder, and Normal — based on user-generated text.
 
 ### <u>Literature Review</u>
-
+_(TBD, Needs to be populated)_
 
 ### <u>Benchmarking</u>
 * __Classical Baseline Model__: A traditional machine learning model (e.g., logistic regression or SVM) trained on TF-IDF features, offering a lightweight benchmark for comparison.
@@ -16,12 +16,13 @@ This project explores how modern NLP techniques can support mental health screen
   * Quantitative metrics: Accuracy, Macro F1-score, Precision, Recall, and Confusion Matrix
   * Efficiency metrics: Training time and resource usage
 
-Comparative analysis of the performance across all three model types:
+__Comparative Analysis__ of the performance across all three model types:
 
+_(TBD, Needs comparison table to be added)_
 
 
 ### <u>Preliminary Experiments</u>
-
+_(TBD)_
 
 ## 2. Model Implementation
 
