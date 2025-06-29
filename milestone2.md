@@ -42,11 +42,13 @@ Comparative analysis of the performance across all three model types:
 
 
 ## 3. GitHub Repository Setup & Code Management
-https://github.com/jiajinz/NLP_Project/tree/main
+The project repository is located here:
+https://github.com/jiajinz/NLP_Project/tree/curtis
 
 
 ### Repository Structure
 ```
+NLP_Project/
 ├── LICENSE
 ├── README.md
 ├── archive
@@ -61,3 +63,14 @@ https://github.com/jiajinz/NLP_Project/tree/main
 └── requirements.txt
 ```
 Note: To get the most up-to-date repository structure, within a `bash shell` run `tree .` within the top-level of the repository.
+
+### Version Control & Collaboration
+Our team used Git as the primary version control system to manage code development and collaboration throughout the project. We hosted the project on GitHub, maintaining a clean and modular repository structure.
+
+We adopted a branching strategy where each team member worked on their own individual branches (e.g., `jie`, `jiajin`, `peter`, and `curtis`) and merged into the shared `main` branch via pull requests.
+
+To coordinate work we used Slack to track tasks and progress. This setup enabled asynchronous collaboration, efficient conflict resolution, and a clear history of project evolution. 
+
+### Documentation
+The README file with setup instructions is located here:
+https://github.com/jiajinz/NLP_Project/blob/curtis/README.md
