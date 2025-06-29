@@ -51,4 +51,4 @@ https://github.com/jiajinz/NLP_Project/tree/main
 │   └── initial_project_notebook.ipynb
 └── requirements.txt
 ```
-Note: To get the most up-to-date repository structure, run `tree .` within the top-level of the repository.
+Note: To get the most up-to-date repository structure, within a `bash shell` run `tree .` within the top-level of the repository.
