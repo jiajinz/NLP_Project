@@ -48,7 +48,8 @@ https://github.com/jiajinz/NLP_Project/tree/main
 │   └── ie7500_group2_initialProjectProposal--SkyComm-AIDE .docx
 ├── data
 │   └── mental_health_sentiment.csv
-├── ie7500_group2_updatedProjectProposal.docx
+├── documents
+│   └── ie7500_group2_updatedProjectProposal.docx
 ├── notebooks
 │   ├── DistilBERT_sentiment_pipeline_cleanran.ipynb
 │   └── initial_project_notebook.ipynb
