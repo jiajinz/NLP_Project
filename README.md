@@ -1,6 +1,6 @@
 # 🧠 EMOLEX: Emotion and Language Exploration for Mental Health
 
-A mental health sentiment classification project using NLP to detect psychological states from short text. This project explores multiple models — from classical baselines to LSTMs and transformers (e.g. BERT) — to identify sentiments such as Anxiety, Depression, Suicidal Ideation, Stress, Bipolar Disorder, Personality Disorder, and Normal from user-generated text.
+![EMOLEX Logo](./emolex_logo.png) A mental health sentiment classification project using NLP to detect psychological states from short text. This project explores multiple models — from classical baselines to LSTMs and transformers (e.g. BERT) — to identify sentiments such as Anxiety, Depression, Suicidal Ideation, Stress, Bipolar Disorder, Personality Disorder, and Normal from user-generated text.
 
 ---
 
@@ -81,6 +81,7 @@ BERT  |  0.80    | 0.73      | 0.80   | 0.75     | High (~3K seconds per epoch)
 LSTM  |  0.75    | 0.70      | 0.69   | 0.70     | Medium (~30 seconds per epoch)
 Classical |  X.XX    | X.XX      | X.XX   | X.XX     | Low (~XX seconds per epoch)
 
+_(This section needs to updated as results come in.)_
 ---
 
 ## 📄 License
