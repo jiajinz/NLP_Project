@@ -1,6 +1,6 @@
 # 🧠 EMOLEX: Emotion and Language Exploration for Mental Health
 
-A mental health sentiment classification project using NLP to detect psychological states from short text. This project explores multiple models — from classical baselines to LSTMs and transformers (like BERT) — to identify sentiments such as **Anxiety**, **Depression**, **Suicidal Ideation**, and others from user-generated text.
+A mental health sentiment classification project using NLP to detect psychological states from short text. This project explores multiple models — from classical baselines to LSTMs and transformers (e.g. BERT) — to identify sentiments such as Anxiety, Depression, Suicidal Ideation, Stress, Bipolar Disorder, Personality Disorder, and Normal from user-generated text.
 
 ---
 
@@ -28,6 +28,7 @@ NLP_Project/
 ├── notebooks             # Development and experiment notebooks
 └── requirements.txt      # Project dependencies
 ```
+_(This section needs to updated development progresses.)_
 
 ---
 
@@ -61,24 +62,24 @@ text,label
 ### 5. Run Experiments
 Use the notebooks in `/notebooks` to explore preprocessing, model training, and evaluation.
 
+_(This section needs to updated and flushed out.)_
+
 ---
 
 ## 🧪 Models & Evaluation
 - ✅ BERT fine-tuning
 - ✅ Bidirectional LSTM
-- ✅ Logistic Regression with TF-IDF
+- ✅ Classical: Logistic Regression with TF-IDF
 - 🔎 Evaluation: Accuracy, Macro F1, Precision/Recall, Confusion Matrix
 
 ---
 
 ## 📊 Benchmarks
-Model | Accuracy | F1 Score | Inference Time
-------|----------|----------|----------------
-BERT  |  XX%     | XX%      | High
-LSTM  |  XX%     | XX%      | Medium
-TF-IDF|  XX%     | XX%      | Low
-
-_(Replace with your actual results)_
+Model | Accuracy | Precision | Recall | F1 Score | Inference Time
+------|----------|-----------|--------|----------|---------------
+BERT  |  0.80    | 0.73      | 0.80   | 0.75     | High (~3K seconds per epoch)
+LSTM  |  0.75    | 0.70      | 0.69   | 0.70     | Medium (~30 seconds per epoch)
+Classical |  X.XX    | X.XX      | X.XX   | X.XX     | Low (~XX seconds per epoch)
 
 ---
 
@@ -93,8 +94,8 @@ Pull requests welcome! For major changes, please open an issue first to discuss 
 ---
 
 ## 🧠 Project Maintainers
-- [Jiajin Zhou](https://github.com/jiajinz)
-- [Jie Lian](https://github.com/jiajinz) _(Replace with Jie's github username)_
-- [Peter Mink](https://github.com/jiajinz) _(Replace with Peter's github username)_
-- [Curtis Neiderer](https://github.com/cneiderer)
+- [Jiajin Zhou](mailto:zhou.j@northeastern.edu)
+- [Jie Lian](mailto:lian.j@northeastern.edu)
+- [Peter Mink](mailto:mink.p@northeastern.edu)
+- [Curtis Neiderer](mailto:neiderer.c@northeastern.edu)
 - Contributors welcome!

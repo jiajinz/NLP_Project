@@ -6,7 +6,7 @@
 This project explores how modern NLP techniques can support mental health screening and analysis with the aim to build a robust, fine-tuned NLP model capable of detecting and classifying mental health-related sentiments expressed in short text (e.g., social media posts, journal entries, etc.). The model will predict one of several mental health categories — including Anxiety, Depression, Suicidal Ideation, Stress, Bipolar Disorder, Personality Disorder, and Normal — based on user-generated text.
 
 ### <u>Literature Review</u>
-_(TBD, Needs to be populated)_
+_(Ths section needs to be populated)_
 
 ### <u>Benchmarking</u>
 * __Classical Baseline Model__: A traditional machine learning model (e.g., logistic regression or SVM) trained on TF-IDF features, offering a lightweight benchmark for comparison.
@@ -18,13 +18,13 @@ _(TBD, Needs to be populated)_
 
 __Comparative Analysis__ of the performance across all three model types:
 
-Model | Accuracy | F1 Score | Inference Time
-------|----------|----------|----------------
-BERT  |  XX%     | XX%      | High
-LSTM  |  XX%     | XX%      | Medium
-TF-IDF|  XX%     | XX%      | Low
+Model | Accuracy | Precision | Recall | F1 Score | Inference Time
+------|----------|-----------|--------|----------|---------------
+BERT  |  0.80    | 0.73      | 0.80   | 0.75     | High (~3K seconds per epoch)
+LSTM  |  0.75    | 0.70      | 0.69   | 0.70     | Medium (~30 seconds per epoch)
+TF-IDF|  X.XX    | X.XX      | X.XX   | X.XX     | Low (~XX seconds per epoch)
 
-_(Replace with your actual results)_
+Note: BERT model training was limited to three epochs due to computing resource limitations.
 
 
 ### <u>Preliminary Experiments</u>
