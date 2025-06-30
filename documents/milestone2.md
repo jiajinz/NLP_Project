@@ -18,7 +18,13 @@ _(TBD, Needs to be populated)_
 
 __Comparative Analysis__ of the performance across all three model types:
 
-_(TBD, Needs comparison table to be added)_
+Model | Accuracy | F1 Score | Inference Time
+------|----------|----------|----------------
+BERT  |  XX%     | XX%      | High
+LSTM  |  XX%     | XX%      | Medium
+TF-IDF|  XX%     | XX%      | Low
+
+_(Replace with your actual results)_
 
 
 ### <u>Preliminary Experiments</u>
@@ -50,23 +56,18 @@ https://github.com/jiajinz/NLP_Project/tree/curtis
 ### Repository Structure
 ```
 NLP_Project/
-├── LICENSE
-├── README.md
-├── archive
-│   └── ie7500_group2_initialProjectProposal--SkyComm-AIDE .docx
-├── data
-│   └── mental_health_sentiment.csv
-├── documents
-│   └── ie7500_group2_updatedProjectProposal.docx
-├── notebooks
-│   ├── DistilBERT_sentiment_pipeline_cleanran.ipynb
-│   └── initial_project_notebook.ipynb
-└── requirements.txt
+├── LICENSE               # MIT License
+├── README.md             # Repository overview with setup instructions
+├── archive               # Old Stuff
+├── data                  # Datasets (or download scripts)
+├── documents             # Documentation, architecture, research notes
+├── notebooks             # Development and experiment notebooks
+└── requirements.txt      # Project dependencies
 ```
 Note: To get the most up-to-date repository structure, within a `bash shell` run `tree .` within the top-level of the repository.
 
 ### Version Control & Collaboration
-Our team used Git as the primary version control system to manage code development and collaboration throughout the project. We hosted the project on GitHub, maintaining a clean and modular repository structure.
+Our team used Git as the primary version control system to manage code development and collaboration throughout the project. 
 
 We adopted a branching strategy where each team member worked on their own individual branches (e.g., `jie`, `jiajin`, `peter`, and `curtis`) and merged into the shared `main` branch via pull requests.
 
@@ -75,3 +76,7 @@ To coordinate work we used Slack to track tasks and progress. This setup enabled
 ### Documentation
 The README file with setup instructions is located here:
 https://github.com/jiajinz/NLP_Project/blob/curtis/README.md
+
+### Submission & Accessibility
+The project is hosted in a public repository on GitHub, located at:
+https://github.com/jiajinz/NLP_Project/tree/curtis
