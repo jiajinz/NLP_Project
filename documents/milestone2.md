@@ -6,7 +6,8 @@
 This project explores how modern NLP techniques can support mental health screening and analysis with the aim to build a robust, fine-tuned NLP model capable of detecting and classifying mental health-related sentiments expressed in short text (e.g., social media posts, journal entries, etc.). The model will predict one of several mental health categories — including Anxiety, Depression, Suicidal Ideation, Stress, Bipolar Disorder, Personality Disorder, and Normal — based on user-generated text.
 
 ### <u>Literature Review</u>
-_(Ths section needs to be populated)_
+
+_(Section needs to be populated.)_
 
 ### <u>Benchmarking</u>
 * __Classical Baseline Model__: A traditional machine learning model (e.g., LR, SVM, etc.) trained on TF-IDF features, offering a lightweight benchmark for comparison.
@@ -28,19 +29,22 @@ TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible (
 TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible (~16s total)
 
 ### <u>Preliminary Experiments</u>
-_(TBD)_
+
+_(Section needs to be populated.)_
 
 ## 2. Model Implementation
 
 
 ### <u>Framework Selection</u>
 
+_(Section needs to be populated.)_
 
 ### <u>Dataset Preparation</u>
 In preparing the mental health sentiment dataset for model training and evaluation, we implemented a preprocessing and cleaning pipeline to ensure data quality and consistency. The raw dataset consisted of short text statements labeled with one of seven mental health categories (e.g., anxiety, depression, stress, bipolar, suicide, etc.). We began by removing duplicates, correcting encoding issues, and stripping irrelevant characters such as excessive punctuation or special symbols. To normalize the text, we converted all inputs to lowercase and applied tokenization tailored to the chosen models. We also handled class imbalance by analyzing label distributions and applying techniques such as stratified splitting to ensure balanced representation across training, validation, and test sets. This structured and consistent preprocessing ensured the models could learn effectively while minimizing noise and bias in the input data.
 
 ### <u>Model Development</u>
 
+_(Section needs to be populated.)_
 
 ### <u>Training & Fine-Tuning</u>
 The training and fine-tuning process for our models was tailored to the specific architecture and learning dynamics of each approach. For transformer-based models such as DistilBERT and BERT, we leveraged transfer learning by fine-tuning pre-trained weights from the Hugging Face Transformers library on our mental health sentiment dataset. This approach allowed us to benefit from rich contextual representations learned from large-scale corpora, while adjusting the models to our domain-specific task. Fine-tuning involved optimizing hyperparameters such as learning rate, batch size, number of epochs, and weight decay using stratified validation splits. For recurrent models like LSTM and BiLSTM, we experimented with different embedding dimensions, hidden units, dropout rates, and optimizers to balance performance and prevent overfitting. Classical models, including TF-IDF combined with Logistic Regression and Support Vector Machines (SVM), were trained with scikit-learn pipelines, tuning hyperparameters like regularization strength and kernel types through grid search and cross-validation. This multi-model training framework ensured each model was appropriately tuned for our classification task while allowing for fair comparisons across different methodological paradigms.
