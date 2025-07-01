@@ -6,27 +6,31 @@
 This project explores how modern NLP techniques can support mental health screening and analysis with the aim to build a robust, fine-tuned NLP model capable of detecting and classifying mental health-related sentiments expressed in short text (e.g., social media posts, journal entries, etc.). The model will predict one of several mental health categories — including Anxiety, Depression, Suicidal Ideation, Stress, Bipolar Disorder, Personality Disorder, and Normal — based on user-generated text.
 
 ### <u>Literature Review</u>
-
-_(Section needs to be populated.)_
+As part of the project’s foundation, we conducted a thorough literature review to understand recent advances in mental health sentiment analysis and to identify the most effective modeling approaches. We examined peer-reviewed papers, conference proceedings (ACL, EMNLP, NeurIPS), and arXiv preprints that focus on text classification in the mental health domain. Notably, we explored studies that applied transformer models such as BERT and DistilBERT, which have consistently outperformed traditional methods in various NLP tasks due to their ability to capture deep contextual semantics. For instance, recent work using BERT fine-tuned on Reddit mental health posts demonstrated strong performance in identifying signs of depression and suicidal ideation. We also reviewed research highlighting the effectiveness of LSTM models for handling sequential text data and capturing emotional patterns over time. In addition, we analyzed papers that benchmark classical models like Logistic Regression and SVMs with engineered features (e.g., TF-IDF) as competitive baselines. From this review, we identified best practices such as leveraging transfer learning, using macro-averaged metrics for imbalanced data, and employing stratified validation splits. These insights guided our selection of models and informed our overall approach to the classification task.
 
 ### <u>Benchmarking</u>
-* __Classical Baseline Model__: A traditional machine learning model (e.g., LR, SVM, etc.) trained on TF-IDF features, offering a lightweight benchmark for comparison.
-* __LSTM-Based Model__: A deep learning baseline using LSTM-based architecture serving as a middle ground between classical and transformer-based methods.
-* __Transformer-Based Model__: A transformer (e.g., BERT, DistilBERT, etc.) tuned to classify user-generated text into one of the seven mental health categories.
-* __Model Evaluation & Comparison__:
+The project benchmarks include:
+
+* __Classical Baseline Models__: Traditional machine learning models (e.g., LR, SVM, etc.) trained on TF-IDF features, offering a lightweight benchmark for comparison.
+* __Recurrent Models__: Deep learning baseline models using recurrent architecture (e.g. LSTM, BiLSTM, etc.) serving as a middle ground between classical and transformer-based methods.
+* __Transformer-Based Models__: Transformer models (e.g., BERT, DistilBERT, etc.) tuned to classify user-generated text into one of the seven mental health categories.
+
+<br>
+
+__Model Evaluation & Comparison__:
   * Quantitative metrics: Accuracy, Macro F1-score, Precision, Recall, and Confusion Matrix
-  * Efficiency metrics: Training time and resource usage
+  * Efficiency metrics: Training time and resource usage (i.e., FLOPS)
 
-__Comparative Analysis__ of the performance across all three model types:
+Here is a comparative summary of the performance across models.
 
-Model        | Accuracy | Precision | Recall | F1 Score | Training Time
--------------|----------|-----------|--------|----------|---------------
-DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K s/epoch)
-BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 s/epoch)
-BiLSTM       |  0.77    | 0.72      | 0.69   | 0.70     | Low (~40 s/epoch)
-LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~240 s/epoch)
-TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible (~21s total)
-TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible (~16s total)
+Model        | Accuracy | Precision | Recall | F1 Score | Training Time | FLOPS
+-------------|----------|-----------|--------|----------|---------------|---
+DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K s/epoch) |
+BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 s/epoch) | 
+BiLSTM       |  0.77    | 0.72      | 0.69   | 0.70     | Low (~40 s/epoch) | 
+LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~240 s/epoch) | 
+TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible (~21s total) | 
+TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible (~16s total) | 
 
 ### <u>Preliminary Experiments</u>
 
