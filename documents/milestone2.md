@@ -37,16 +37,16 @@ _(TBD)_
 
 
 ### <u>Dataset Preparation</u>
-
+In preparing the mental health sentiment dataset for model training and evaluation, we implemented a preprocessing and cleaning pipeline to ensure data quality and consistency. The raw dataset consisted of short text statements labeled with one of seven mental health categories (e.g., anxiety, depression, stress, bipolar, suicide, etc.). We began by removing duplicates, correcting encoding issues, and stripping irrelevant characters such as excessive punctuation or special symbols. To normalize the text, we converted all inputs to lowercase and applied tokenization tailored to the chosen models. We also handled class imbalance by analyzing label distributions and applying techniques such as stratified splitting to ensure balanced representation across training, validation, and test sets. This structured and consistent preprocessing ensured the models could learn effectively while minimizing noise and bias in the input data.
 
 ### <u>Model Development</u>
 
 
 ### <u>Training & Fine-Tuning</u>
-
+The training and fine-tuning process for our models was tailored to the specific architecture and learning dynamics of each approach. For transformer-based models such as DistilBERT and BERT, we leveraged transfer learning by fine-tuning pre-trained weights from the Hugging Face Transformers library on our mental health sentiment dataset. This approach allowed us to benefit from rich contextual representations learned from large-scale corpora, while adjusting the models to our domain-specific task. Fine-tuning involved optimizing hyperparameters such as learning rate, batch size, number of epochs, and weight decay using stratified validation splits. For recurrent models like LSTM and BiLSTM, we experimented with different embedding dimensions, hidden units, dropout rates, and optimizers to balance performance and prevent overfitting. Classical models, including TF-IDF combined with Logistic Regression and Support Vector Machines (SVM), were trained with scikit-learn pipelines, tuning hyperparameters like regularization strength and kernel types through grid search and cross-validation. This multi-model training framework ensured each model was appropriately tuned for our classification task while allowing for fair comparisons across different methodological paradigms.
 
 ### <u>Evaluation & Metrics</u>
-
+To evaluate the performance of our models in classifying mental health-related sentiments, we employed a suite of standard classification metrics that offer a well-rounded view of predictive effectiveness. Accuracy was used as a general indicator of overall correctness, measuring the proportion of correctly predicted labels across all classes. However, given the imbalanced nature of mental health categories, we placed greater emphasis on the macro-averaged F1-score, which equally weighs the F1-scores of all classes to ensure that minority categories like suicidal or bipolar were not overshadowed by more frequent labels. Additionally, we reported macro-averaged precision and recall to separately assess the model’s ability to minimize false positives and false negatives, respectively. This multi-metric evaluation approach ensures that our models are not only accurate but also fair and robust across all sentiment classes, which is particularly important for sensitive applications in mental health analysis.
 
 ## 3. GitHub Repository Setup & Code Management
 The project repository is located here:
@@ -78,5 +78,5 @@ The README file with setup instructions is located here:
 https://github.com/jiajinz/NLP_Project/blob/curtis/README.md
 
 ### Submission & Accessibility
-The project is hosted in a public repository on GitHub, located at:
+The project is hosted in a publically accessible repository on GitHub, located at:
 https://github.com/jiajinz/NLP_Project/tree/curtis
