@@ -70,16 +70,16 @@ _(This section needs to updated and flushed out.)_
 
 ## 📊 Performance Benchmarks
 
-Here is a comparative analysis of the performance across models.
+Here is a comparative summary of the performance across models.
 
 Model        | Accuracy | Precision | Recall | F1 Score | Training Time
 -------------|----------|-----------|--------|----------|---------------
 DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K sec/epoch)
 BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 sec/epoch)
-BiLSTM       |  0.75    | 0.70      | 0.69   | 0.70     | Medium (~30 sec/epoch)
-LSTM         |          |           |        |          | Medium (~45 sec/epoch)
-TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low
-TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low
+BiLSTM       |  0.75    | 0.70      | 0.69   | 0.70     | Low (~40 sec/epoch)
+LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~120 sec/epoch)
+TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible
+TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible
 
 
 Here are the confusion matrices for each model, showing the categories where each excels vs. struggles.
