@@ -1,0 +1,42 @@
+[project]
+name = "emolex"
+version = "0.1.0"
+description = "EMOLEX: Emotion and Language Exploration for Mental Health"
+authors = [
+    { name = "Your Name", email = "your.email@example.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10,<3.12"
+keywords = ["nlp", "mental-health", "transformers", "tensorflow", "sentiment-analysis"]
+
+dependencies = [
+    "tensorflow>=2.11",
+    "transformers>=4.35",
+    "scikit-learn>=1.2",
+    "pandas>=1.5",
+    "numpy>=1.24",
+    "matplotlib>=3.6",
+    "seaborn>=0.12",
+    "jupyterlab>=3.5",
+    "scipy>=1.10",
+    "datasets>=2.14",
+    "nltk>=3.8",
+    "tqdm>=4.65",
+    "pyyaml>=6.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "flake8",
+    "pytest",
+    "jupyter",
+    "pipreqs",
+    "pipreqsnb"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
