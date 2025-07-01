@@ -5,7 +5,9 @@ A mental health sentiment classification project using NLP to detect psychologic
 
 ## 📌 Project Description
 
-The goal of EMOLEX is to develop a multi-class classifier that predicts the mental health condition underlying a given text statement. The project benchmarks:
+The goal of EMOLEX is to develop a multi-class classifier that predicts the mental health condition underlying a given text statement. 
+
+The project benchmarks include:
 
 - **Transformer models** (BERT)
 - **Bidirectional LSTM**
@@ -22,6 +24,7 @@ NLP_Project/
 ├── archive               # Old Stuff
 ├── data                  # Datasets (or download scripts)
 ├── documents             # Documentation, architecture, research notes
+├── figures               # Performance plots
 ├── notebooks             # Development and experiment notebooks
 └── requirements.txt      # Project dependencies
 ```
