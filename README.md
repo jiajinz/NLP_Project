@@ -1,4 +1,4 @@
-# <img src="./emolex_logo.png" align="left" alt="Sample Image" class="image-left" width="120px" height="120px" style="padding: 10px"/> EMOLEX: Emotion and Language Exploration for Mental Health
+# <img src="./emolex_logo.png" align="left" alt="Sample Image" class="image-left" width="120px" height="120px" style="padding: 10px"/> EMOLEX: Emotion and Language Exploration for Mental Health<br>
 
 
 A mental health sentiment classification project using NLP to detect psychological states from short text. This project explores multiple models — from classical baselines to LSTMs and transformers (e.g., BERT) — to identify sentiments such as Anxiety, Depression, Suicidal Ideation, Stress, Bipolar Disorder, Personality Disorder, and Normal from user-generated text.
