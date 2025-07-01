@@ -66,11 +66,30 @@ _(This section needs to updated and flushed out.)_
 - 🔎 Evaluation: Accuracy, Macro F1, Precision/Recall, Confusion Matrix
 
 ## 📊 Benchmarks
+
+Here is a comparative analysis of the performance across models.
+
 Model | Accuracy | Precision | Recall | F1 Score | Inference Time
 ------|----------|-----------|--------|----------|---------------
 BERT  |  0.80    | 0.73      | 0.80   | 0.75     | High (~3K seconds per epoch)
 LSTM  |  0.75    | 0.70      | 0.69   | 0.70     | Medium (~30 seconds per epoch)
 Classical |  X.XX    | X.XX      | X.XX   | X.XX     | Low (~XX seconds per epoch)
+
+
+Here are the confusion matrices for each model, showing the categories where each excels vs. struggles.
+
+<table cellspacing="0px" cellpadding="0px">
+  <tr>
+    <th>BERT</th>
+    <th>LSTM</th>
+    <th>Classical</th>
+  </tr>
+  <tr>
+    <td><img src="./figures/bert_confusion_matrix.png" alt="BERT Confusion Matrix"></td>
+    <td><img src="./figures/lstm_confusion_matrix.png" alt="LSTM Confusion Matrix"></td>
+    <td><img src="*.png" alt="Classical Confusion Matrix"></td>
+  </tr>
+</table>
 
 _(This section needs to updated as results come in.)_
 
