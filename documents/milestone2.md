@@ -9,22 +9,23 @@ This project explores how modern NLP techniques can support mental health screen
 _(Ths section needs to be populated)_
 
 ### <u>Benchmarking</u>
-* __Classical Baseline Model__: A traditional machine learning model (e.g., logistic regression or SVM) trained on TF-IDF features, offering a lightweight benchmark for comparison.
-* __LSTM-Based Model__: A deep learning baseline using a Bidirectional LSTM serving as a middle ground between classical and transformer-based methods.
-* __Transformer-Based Model__: A fine-tuned transformer (e.g., BERT) trained to classify user-generated text into one of seven mental health categories.
+* __Classical Baseline Model__: A traditional machine learning model (e.g., LR, SVM, etc.) trained on TF-IDF features, offering a lightweight benchmark for comparison.
+* __LSTM-Based Model__: A deep learning baseline using LSTM-based architecture serving as a middle ground between classical and transformer-based methods.
+* __Transformer-Based Model__: A transformer (e.g., BERT, DistilBERT, etc.) tuned to classify user-generated text into one of the seven mental health categories.
 * __Model Evaluation & Comparison__:
   * Quantitative metrics: Accuracy, Macro F1-score, Precision, Recall, and Confusion Matrix
   * Efficiency metrics: Training time and resource usage
 
 __Comparative Analysis__ of the performance across all three model types:
 
-Model | Accuracy | Precision | Recall | F1 Score | Inference Time
-------|----------|-----------|--------|----------|---------------
-BERT  |  0.80    | 0.73      | 0.80   | 0.75     | High (~3K seconds per epoch)
-LSTM  |  0.75    | 0.70      | 0.69   | 0.70     | Medium (~30 seconds per epoch)
-TF-IDF|  X.XX    | X.XX      | X.XX   | X.XX     | Low (~XX seconds per epoch)
-
-Note: BERT model training was limited to three epochs due to computing resource limitations.
+Model        | Accuracy | Precision | Recall | F1 Score | Training Time
+-------------|----------|-----------|--------|----------|---------------
+DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K sec/epoch)
+BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 sec/epoch)
+BiLSTM       |  0.75    | 0.70      | 0.69   | 0.70     | Medium (~30 sec/epoch)
+LSTM         |          |           |        |          | Medium (~45 sec/epoch)
+TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low
+TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low
 
 
 ### <u>Preliminary Experiments</u>
