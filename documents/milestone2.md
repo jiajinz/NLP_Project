@@ -74,7 +74,7 @@ NLP_Project/
 ├── notebooks             # Development and experiment notebooks
 └── requirements.txt      # Project dependencies
 ```
-Note: To get the most up-to-date repository structure, navigate to the top-level of the repository and using `bash` run `tree .`.
+Note: To get the most detailed and up-to-date repository structure, navigate to the top-level of the repository and within `bash` run `tree .`.
 
 ### Version Control & Collaboration
 Our team used Git as the primary version control system to manage code development and collaboration throughout the project. We adopted a branching strategy where each team member worked on their own individual branches (e.g., `jie`, `jiajin`, `peter`, and `curtis`) and merged into the shared `main` branch via pull requests. To coordinate work we used Slack to track tasks and progress. This setup enabled asynchronous collaboration, efficient conflict resolution, and a clear history of project evolution. 
