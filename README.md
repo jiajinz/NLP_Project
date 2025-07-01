@@ -74,12 +74,12 @@ Here is a comparative summary of the performance across models.
 
 Model        | Accuracy | Precision | Recall | F1 Score | Training Time
 -------------|----------|-----------|--------|----------|---------------
-DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K sec/epoch)
-BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 sec/epoch)
-BiLSTM       |  0.75    | 0.70      | 0.69   | 0.70     | Low (~40 sec/epoch)
-LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~120 sec/epoch)
-TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible
-TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible
+DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K s/epoch)
+BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 s/epoch)
+BiLSTM       |  0.77    | 0.72      | 0.69   | 0.70     | Low (~40 s/epoch)
+LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~120 s/epoch)
+TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible (~21s total)
+TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible (~16s total)
 
 
 Here are the confusion matrices for each model, showing the categories where each excels vs. struggles.
@@ -90,24 +90,24 @@ Here are the confusion matrices for each model, showing the categories where eac
         <th>BERT</th>
     </tr>
     <tr>
-        <td><img src="./figures/distilbert_confusion_matrix.png" alt="DistilBERT Confusion Matrix"></td>
-        <td><img src="./figures/bert_confusion_matrix.png" alt="BERT Confusion Matrix"></td>
+        <td><img src="./figures/distilbert_confusion_matrix.png" alt="DistilBERT Confusion Matrix" height="300px" width="300px"></td>
+        <td><img src="./figures/bert_confusion_matrix.png" alt="BERT Confusion Matrix" height="300px" width="300px"></td>
     </tr>
     <tr>
         <th>BiLSTM</th>
         <th>LSTM</th>
     </tr>
     <tr>
-        <td><img src="./figures/bilstm_confusion_matrix.png" alt="BiLSTM Confusion Matrix"></td>
-        <td><img src="./figures/lstm_confusion_matrix.png" alt="LSTM Confusion Matrix"></td>
+        <td><img src="./figures/bilstm_confusion_matrix.png" alt="BiLSTM Confusion Matrix" height="300px" width="300px"></td>
+        <td><img src="./figures/lstm_confusion_matrix.png" alt="LSTM Confusion Matrix" height="300px" width="300px"></td>
     </tr>
     <tr>
         <th>TF-IDF + LR</th>
         <th>TF-IDF + SVM</th>
     </tr>
     <tr>
-        <td><img src="./figures/lr_confusion_matrix.png" alt="Classical LR Confusion Matrix"></td>
-        <td><img src="./figures/svm_confusion_matrix.png" alt="Classical SVM Confusion Matrix"></td>
+        <td><img src="./figures/lr_confusion_matrix.png" alt="Classical LR Confusion Matrix" height="300px" width="300px"></td>
+        <td><img src="./figures/svm_confusion_matrix.png" alt="Classical SVM Confusion Matrix" height="300px" width="300px"></td>
     </tr>
 </table>
 

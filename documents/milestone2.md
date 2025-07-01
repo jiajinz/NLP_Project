@@ -20,12 +20,12 @@ __Comparative Analysis__ of the performance across all three model types:
 
 Model        | Accuracy | Precision | Recall | F1 Score | Training Time
 -------------|----------|-----------|--------|----------|---------------
-DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K sec/epoch)
-BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 sec/epoch)
-BiLSTM       |  0.75    | 0.70      | 0.69   | 0.70     | Low (~40 sec/epoch)
-LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~120 sec/epoch)
-TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible
-TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible
+DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K s/epoch)
+BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 s/epoch)
+BiLSTM       |  0.77    | 0.72      | 0.69   | 0.70     | Low (~40 s/epoch)
+LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~240 s/epoch)
+TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible (~21s total)
+TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible (~16s total)
 
 ### <u>Preliminary Experiments</u>
 _(TBD)_
