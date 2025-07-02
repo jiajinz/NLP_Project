@@ -7,7 +7,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import Callback
 import numpy as np
 import pandas as pd
-
+import torch
 from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
 from datasets import Dataset
 import evaluate
@@ -179,11 +179,12 @@ def train_bert_model(
     """
     # Set seed for reproducibility
     tf.random.set_seed(random_seed) # For TensorFlow operations within Hugging Face
-    # Also set for numpy and torch if you're using them directly in compute_metrics
     np.random.seed(random_seed)
-    # import torch
-    # torch.manual_seed(random_seed)
-    # torch.cuda.manual_seed_all(random_seed)
+    # If using PyTorch backend for Hugging Face (default), also set torch seeds:
+    
+    torch.manual_seed(random_seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(random_seed)
 
     print("Loading pre-trained BERT model...")
     # Load pre-trained model
@@ -202,7 +203,9 @@ def train_bert_model(
         seed=random_seed, 
         evaluation_strategy="epoch", 
         load_best_model_at_end=True, 
-        metric_for_best_model="accuracy", 
+        # Changed metric_for_best_model to match one of the keys returned by compute_metrics
+        # "macro_f1" or "accuracy" are good choices. Let's use "macro_f1" as it's a balanced metric.
+        metric_for_best_model="macro_f1", 
         greater_is_better=True, 
     )
 
@@ -221,14 +224,17 @@ def train_bert_model(
         labels_np = labels.numpy() if hasattr(labels, 'numpy') else labels
 
         accuracy = accuracy_metric.compute(predictions=predictions, references=labels_np)["accuracy"]
+        # For multi-class, 'macro' average is common
         precision = precision_metric.compute(predictions=predictions, references=labels_np, average="macro")["precision"]
         recall = recall_metric.compute(predictions=predictions, references=labels_np, average="macro")["recall"]
+        # Corrected: Use the variable 'f1' which holds the computed f1_metric result
         f1 = f1_metric.compute(predictions=predictions, references=labels_np, average='macro')["f1"]
+        
         return {
             "accuracy": accuracy,
             "macro_precision": precision,
             "macro_recall": recall,
-            "macro_f1": f1_score
+            "macro_f1": f1 
         }
 
     print("Setting up Hugging Face Trainer...")
@@ -237,7 +243,7 @@ def train_bert_model(
         model=model,
         args=training_args,
         train_dataset=train_dataset,
-        eval_dataset=eval_dataset, # Renamed from test_dataset for clarity with Trainer
+        eval_dataset=eval_dataset,
         compute_metrics=compute_metrics,
     )
 
