@@ -29,7 +29,7 @@ def lstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim: i
         Embedding(input_dim=vocab_size, output_dim=embedding_dim, input_length=max_len),
         LSTM(128, return_sequences=True, dropout=0.3, recurrent_dropout=0.3),
         Dropout(0.3),
-        LSTM(64), # The last LSTM layer before Dense layers usually does not return sequences
+        LSTM(64),
         Dense(32, activation='relu'),
         Dropout(0.2),
         Dense(num_classes, activation='softmax')
@@ -68,9 +68,9 @@ def bilstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim:
     """
     model = Sequential([
         Embedding(input_dim=vocab_size, output_dim=embedding_dim, input_length=max_len),
-        Bidirectional(LSTM(128, return_sequences=True, dropout=0.3, recurrent_dropout=0.3)), # Added dropout here
+        Bidirectional(LSTM(128, return_sequences=True, dropout=0.3, recurrent_dropout=0.3)),
         Dropout(0.3),
-        Bidirectional(LSTM(64, dropout=0.3, recurrent_dropout=0.3)), # Added dropout here
+        Bidirectional(LSTM(64, dropout=0.3, recurrent_dropout=0.3)),
         Dense(32, activation='relu'),
         Dropout(0.2),
         Dense(num_classes, activation='softmax')
@@ -84,7 +84,8 @@ def bilstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim:
         metrics=['accuracy']
     )
 
-    model.build(input_shape=(None, max_len))
+    # Building the model ensures input_shape is set and allows summary to show correct shapes
+    model.build(input_shape=(None, max_len)) # (None for batch size, max_len for sequence length)
     model.summary()
     
     return model
@@ -93,13 +94,13 @@ def bilstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim:
 def train_dl_model(
     model: tf.keras.Model, 
     X_train_pad: np.ndarray, 
-    y_train: np.ndarray, # Or pd.Series if you prefer
+    y_train: [np.ndarray | pd.Series],
     X_test_pad: np.ndarray, 
-    y_test: np.ndarray, # Or pd.Series if you prefer
+    y_test: [np.ndarray | pd.Series],
     epochs: int = 10, 
     batch_size: int = 32, 
     callbacks: list[Callback] = None,
-    random_seed: int = 42 # Parameter is now used
+    random_seed: int = 42 
 ) -> tuple[tf.keras.Model, tf.keras.callbacks.History]:
     """
     Trains a Keras deep learning model and returns the trained model and its training history.
@@ -107,9 +108,9 @@ def train_dl_model(
     Args:
         model (tf.keras.Model): The compiled Keras model to be trained.
         X_train_pad (np.ndarray): Padded and tokenized training features.
-        y_train (np.ndarray): Training labels (encoded).
+        y_train (np.ndarray | pd.Series): Training labels (encoded).
         X_test_pad (np.ndarray): Padded and tokenized validation features.
-        y_test (np.ndarray): Validation labels (encoded).
+        y_test (np.ndarray | pd.Series): Validation labels (encoded).
         epochs (int): Number of training epochs. Defaults to 10.
         batch_size (int): Number of samples per gradient update. Defaults to 32.
         callbacks (list[tf.keras.callbacks.Callback]): List of Keras callbacks to apply during training.
@@ -137,9 +138,8 @@ def train_dl_model(
         epochs=epochs,
         batch_size=batch_size,
         callbacks=callbacks,
-        verbose=1 # Show progress bar during training
+        verbose=1
     )
     
     print("Model training complete.")
-    # Corrected return value to include the model as well
     return model, history 
