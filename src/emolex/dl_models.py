@@ -8,6 +8,10 @@ from tensorflow.keras.callbacks import Callback
 import numpy as np
 import pandas as pd
 
+from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
+from datasets import Dataset
+import evaluate
+
 
 def lstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim: int = 128) -> tf.keras.Model:
     """
@@ -94,9 +98,9 @@ def bilstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim:
 def train_dl_model(
     model: tf.keras.Model, 
     X_train_pad: np.ndarray, 
-    y_train: [np.ndarray | pd.Series],
+    y_train: Union[np.ndarray | pd.Series],
     X_test_pad: np.ndarray, 
-    y_test: [np.ndarray | pd.Series],
+    y_test: Union[np.ndarray | pd.Series],
     epochs: int = 10, 
     batch_size: int = 32, 
     callbacks: list[Callback] = None,
@@ -143,3 +147,108 @@ def train_dl_model(
     
     print("Model training complete.")
     return model, history 
+
+    
+def train_bert_model(
+    num_classes: int, 
+    train_dataset: Dataset, 
+    eval_dataset: Dataset,
+    output_dir: str = "./bert_output",
+    num_train_epochs: int = 2,
+    per_device_batch_size: int = 16,
+    logging_dir: str = "./logs",
+    random_seed: int = 42
+) -> tuple[Trainer, dict]:
+    """
+    Trains/Fine-tunes a Hugging Face BertForSequenceClassification model.
+
+    Args:
+        num_classes (int): The number of output classes for the classification task.
+        train_dataset (datasets.Dataset): The tokenized training dataset (Hugging Face Dataset object).
+        eval_dataset (datasets.Dataset): The tokenized evaluation dataset (Hugging Face Dataset object).
+        output_dir (str): Directory to save model checkpoints and outputs. Defaults to "./bert_output".
+        num_train_epochs (int): Total number of training epochs to perform. Defaults to 2.
+        per_device_batch_size (int): Batch size per GPU/CPU for training and evaluation. Defaults to 16.
+        logging_dir (str): Directory for storing logs. Defaults to "./logs".
+        random_seed (int): Random seed for reproducibility. Defaults to 42.
+
+    Returns:
+        tuple[Trainer, dict]: A tuple containing:
+            - The Hugging Face Trainer object after training.
+            - A dictionary of evaluation results.
+    """
+    # Set seed for reproducibility
+    tf.random.set_seed(random_seed) # For TensorFlow operations within Hugging Face
+    # Also set for numpy and torch if you're using them directly in compute_metrics
+    np.random.seed(random_seed)
+    # import torch
+    # torch.manual_seed(random_seed)
+    # torch.cuda.manual_seed_all(random_seed)
+
+    print("Loading pre-trained BERT model...")
+    # Load pre-trained model
+    model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=num_classes)
+
+    print("Defining training arguments...")
+    # Define training args
+    training_args = TrainingArguments(
+        output_dir=output_dir,
+        per_device_train_batch_size=per_device_batch_size,
+        per_device_eval_batch_size=per_device_batch_size,
+        num_train_epochs=num_train_epochs,
+        logging_dir=logging_dir,
+        save_strategy="epoch",
+        report_to="none", 
+        seed=random_seed, 
+        evaluation_strategy="epoch", 
+        load_best_model_at_end=True, 
+        metric_for_best_model="accuracy", 
+        greater_is_better=True, 
+    )
+
+    print("Loading evaluation metrics...")
+    # Evaluation metrics
+    accuracy_metric = evaluate.load("accuracy")
+    precision_metric = evaluate.load("precision")
+    recall_metric = evaluate.load("recall")
+    f1_metric = evaluate.load("f1")
+
+    def compute_metrics(eval_pred):
+        logits, labels = eval_pred
+        predictions = np.argmax(logits, axis=-1)
+        
+        # Ensure labels are numpy arrays for metrics computation if they are not already
+        labels_np = labels.numpy() if hasattr(labels, 'numpy') else labels
+
+        accuracy = accuracy_metric.compute(predictions=predictions, references=labels_np)["accuracy"]
+        precision = precision_metric.compute(predictions=predictions, references=labels_np, average="macro")["precision"]
+        recall = recall_metric.compute(predictions=predictions, references=labels_np, average="macro")["recall"]
+        f1 = f1_metric.compute(predictions=predictions, references=labels_np, average='macro')["f1"]
+        return {
+            "accuracy": accuracy,
+            "macro_precision": precision,
+            "macro_recall": recall,
+            "macro_f1": f1_score
+        }
+
+    print("Setting up Hugging Face Trainer...")
+    # Trainer setup
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=train_dataset,
+        eval_dataset=eval_dataset, # Renamed from test_dataset for clarity with Trainer
+        compute_metrics=compute_metrics,
+    )
+
+    print("Starting BERT model training...")
+    # Train
+    trainer.train()
+    print("BERT model training complete.")
+
+    print("Evaluating BERT model...")
+    # Evaluate
+    results = trainer.evaluate()
+    print("BERT model evaluation results:", results)
+
+    return trainer, results
