@@ -6,7 +6,8 @@ import pandas as pd
 from typing import Union, Dict, Tuple, List
 from sklearn.utils.class_weight import compute_class_weight
 from tensorflow.keras.callbacks import Callback, EarlyStopping
-from tensorflow.keras.optimizers import Adam
+# from tensorflow.keras.optimizers import Adam
+from tf_keras.optimizers import Adam
 import torch
 
 # --- Hugging Face Imports ---
@@ -317,9 +318,10 @@ def train_distilbert_model(
 
     print("Compiling model...")
     model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
-        # optimizer=Adam(learning_rate=learning_rate),
-        loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), # from_logits=True is important for raw model output
+        # Change this line:
+        optimizer="adam",
+        # optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
+        loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         metrics=["accuracy"],
     )
 

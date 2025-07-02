@@ -15,7 +15,7 @@ keywords = ["nlp", "mental-health", "transformers", "tensorflow", "sentiment-ana
 
 dependencies = [
     "tensorflow>=2.11",
-    "transformers>=4.35",
+    "transformers==4.38.2",
     "scikit-learn>=1.2",
     "pandas>=1.5",
     "numpy>=1.24",
@@ -26,7 +26,8 @@ dependencies = [
     "datasets>=2.14",
     "nltk>=3.8",
     "tqdm>=4.65",
-    "pyyaml>=6.0"
+    "pyyaml>=6.0",
+    "accelerate==0.27.2"
 ]
 
 [project.optional-dependencies]
