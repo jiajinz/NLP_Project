@@ -183,7 +183,7 @@ def train_bert_model(
     return trainer, results
 
 
-    def train_distilbert_model(
+def train_distilbert_model(
     X_train: Union[np.ndarray, pd.Series, list[str]],
     y_train: Union[np.ndarray, pd.Series, list[int]],
     X_test: Union[np.ndarray, pd.Series, list[str]],
@@ -298,4 +298,3 @@ def train_bert_model(
 
     print("DistilBERT model training complete.")
     return model, history
-    
