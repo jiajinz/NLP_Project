@@ -66,7 +66,7 @@ _(This section needs to updated and flushed out.)_
 - ✅ Transformers: DistilBERT, BERT
 - ✅ LSTMs: LSTM, BiLSTM
 - ✅ Classical ML: TF-IDF + LR, TF-IDF + SVM 
-- 🔎 Evaluation: Accuracy, Macro F1, Precision/Recall, Confusion Matrix, Training Time, FLOPS
+- 🔎 Evaluation: Accuracy, Macro F1, Precision/Recall, Confusion Matrix, Training Time
 
 ## 📊 Performance Benchmarks
 
