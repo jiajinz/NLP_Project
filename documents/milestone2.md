@@ -63,17 +63,23 @@ The project repository is located here:
 https://github.com/jiajinz/NLP_Project/tree/curtis
 
 ### Repository Structure
-```
+This project is organized to provide a clear separation of concerns, with dedicated directories for data, source code, and configuration.
+
+```bash
 NLP_Project/
-├── LICENSE               # MIT License
-├── README.md             # Repository overview with setup instructions
-├── archive               # Old Stuff
-├── data                  # Datasets (or download scripts)
-├── documents             # Documentation, architecture, research notes
-├── notebooks             # Development and experiment notebooks
-└── requirements.txt      # Project dependencies
+├── LICENSE                           # MIT License.
+├── README.md                         # Repository overview and setup.
+├── pyproject.toml                    # Project configuration.
+├── requirements.txt                  # Project dependencies.
+├── data/                             # Project datasets.
+├── documents/                        # Documentation, architecture, research notes.
+├── figures                           # Performance plots.
+├── notebooks/                        # Development and experiment notebooks.
+├── src/                              # Contains the core source code.
+│   └── emolex/                       # The main  package for the project.
 ```
-Note: To get the most detailed and up-to-date repository structure, navigate to the top-level of the repository and within `bash` run `tree .`.
+
+Note: To get the most detailed and up-to-date repository structure, navigate to the top-level of the repository and within `bash` run `tree .`. This will return every file and directory, not just the main ones summarized here.
 
 ### Version Control & Collaboration
 Our team used Git as the primary version control system to manage code development and collaboration throughout the project. We adopted a branching strategy where each team member worked on their own individual branches (e.g., `jie`, `jiajin`, `peter`, and `curtis`) and merged into the shared `main` branch via pull requests. To coordinate work we used Slack to track tasks and progress. This setup enabled asynchronous collaboration, efficient conflict resolution, and a clear history of project evolution. 
