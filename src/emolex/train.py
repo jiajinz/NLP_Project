@@ -3,11 +3,16 @@
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-from typing import Union, Dict 
+from typing import Union, Dict, Tuple, List
+from sklearn.utils.class_weight import compute_class_weight
 from tensorflow.keras.callbacks import Callback, EarlyStopping
+from tensorflow.keras.optimizers import Adam
+import torch
 
 # --- Hugging Face Imports ---
 from transformers import (
+    BertTokenizer,
+    BertForSequenceClassification,
     DistilBertTokenizerFast,
     TFDistilBertForSequenceClassification,
     DataCollatorWithPadding,
@@ -76,24 +81,33 @@ def train_dl_model(
 
     
 def train_bert_model(
-    num_classes: int, 
-    train_dataset: Dataset, 
-    eval_dataset: Dataset,
+    X_train: Union[np.ndarray, pd.Series, list[str]],
+    y_train: Union[np.ndarray, pd.Series, list[int]],
+    X_test: Union[np.ndarray, pd.Series, list[str]],
+    y_test: Union[np.ndarray, pd.Series, list[int]],
+    num_classes: int,
+    max_len: int = 128, # Added max_len parameter for tokenization
     output_dir: str = "./bert_output",
-    num_train_epochs: int = 2,
+    num_train_epochs: int = 3, # Changed docstring default to 3
     per_device_batch_size: int = 16,
     logging_dir: str = "./logs",
     random_seed: int = 42
-) -> tuple[Trainer, dict]:
+) -> Tuple[Trainer, dict]: # Using Tuple for Python < 3.9 compatibility
     """
     Trains/Fine-tunes a Hugging Face BertForSequenceClassification model.
 
+    This function handles tokenization, conversion to Hugging Face Datasets,
+    model loading, and training using the Hugging Face Trainer API.
+
     Args:
+        X_train (np.ndarray | pd.Series | list[str]): Training text data.
+        y_train (np.ndarray | pd.Series | list[int]): Training labels (integer-encoded).
+        X_test (np.ndarray | pd.Series | list[str]): Evaluation text data.
+        y_test (np.ndarray | pd.Series | list[int]): Evaluation labels (integer-encoded).
         num_classes (int): The number of output classes for the classification task.
-        train_dataset (datasets.Dataset): The tokenized training dataset (Hugging Face Dataset object).
-        eval_dataset (datasets.Dataset): The tokenized evaluation dataset (Hugging Face Dataset object).
+        max_len (int): The maximum sequence length for tokenization. Defaults to 128.
         output_dir (str): Directory to save model checkpoints and outputs. Defaults to "./bert_output".
-        num_train_epochs (int): Total number of training epochs to perform. Defaults to 2.
+        num_train_epochs (int): Total number of training epochs to perform. Defaults to 3.
         per_device_batch_size (int): Batch size per GPU/CPU for training and evaluation. Defaults to 16.
         logging_dir (str): Directory for storing logs. Defaults to "./logs".
         random_seed (int): Random seed for reproducibility. Defaults to 42.
@@ -107,17 +121,38 @@ def train_bert_model(
     tf.random.set_seed(random_seed) # For TensorFlow operations within Hugging Face
     np.random.seed(random_seed)
     # If using PyTorch backend for Hugging Face (default), also set torch seeds:
-    
     torch.manual_seed(random_seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(random_seed)
 
+    print("Loading BERT tokenizer...")
+    tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+
+    # Tokenization function (uses max_len from function parameters)
+    def tokenize_function(example):
+        return tokenizer(example["text"], padding="max_length", truncation=True, max_length=max_len)
+
+    print("Creating Hugging Face Datasets from input data...")
+    # --- CRITICAL FIX: Create datasets from X_train/y_train etc. ---
+    train_dataset_hf = Dataset.from_dict({'text': X_train.tolist(), 'label': y_train.tolist()})
+    eval_dataset_hf = Dataset.from_dict({'text': X_test.tolist(), 'label': y_test.tolist()})
+
+    print("Tokenizing datasets...")
+    train_dataset_tokenized = train_dataset_hf.map(tokenize_function, batched=True, remove_columns=["text"])
+    eval_dataset_tokenized = eval_dataset_hf.map(tokenize_function, batched=True, remove_columns=["text"])
+
+    # Ensure labels are native integers for the model (good practice, though Trainer often handles this)
+    train_dataset_tokenized = train_dataset_tokenized.map(lambda x: {"label": int(x["label"])})
+    eval_dataset_tokenized = eval_dataset_tokenized.map(lambda x: {"label": int(x["label"])})
+
+    # Set format to PyTorch tensors for Trainer (Hugging Face Trainer's default backend)
+    train_dataset_tokenized.set_format("torch", columns=["input_ids", "attention_mask", "label"])
+    eval_dataset_tokenized.set_format("torch", columns=["input_ids", "attention_mask", "label"])
+
     print("Loading pre-trained BERT model...")
-    # Load pre-trained model
     model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=num_classes)
 
     print("Defining training arguments...")
-    # Define training args
     training_args = TrainingArguments(
         output_dir=output_dir,
         per_device_train_batch_size=per_device_batch_size,
@@ -125,18 +160,15 @@ def train_bert_model(
         num_train_epochs=num_train_epochs,
         logging_dir=logging_dir,
         save_strategy="epoch",
-        report_to="none", 
-        seed=random_seed, 
-        evaluation_strategy="epoch", 
-        load_best_model_at_end=True, 
-        # Changed metric_for_best_model to match one of the keys returned by compute_metrics
-        # "macro_f1" or "accuracy" are good choices. Let's use "macro_f1" as it's a balanced metric.
-        metric_for_best_model="macro_f1", 
-        greater_is_better=True, 
+        report_to="none",
+        seed=random_seed,
+        evaluation_strategy="epoch",
+        load_best_model_at_end=True,
+        metric_for_best_model="accuracy", # Ensure this matches a key in compute_metrics
+        greater_is_better=True,
     )
 
     print("Loading evaluation metrics...")
-    # Evaluation metrics
     accuracy_metric = evaluate.load("accuracy")
     precision_metric = evaluate.load("precision")
     recall_metric = evaluate.load("recall")
@@ -145,7 +177,7 @@ def train_bert_model(
     def compute_metrics(eval_pred):
         logits, labels = eval_pred
         predictions = np.argmax(logits, axis=-1)
-        
+
         # Ensure labels are numpy arrays for metrics computation if they are not already
         labels_np = labels.numpy() if hasattr(labels, 'numpy') else labels
 
@@ -153,33 +185,29 @@ def train_bert_model(
         # For multi-class, 'macro' average is common
         precision = precision_metric.compute(predictions=predictions, references=labels_np, average="macro")["precision"]
         recall = recall_metric.compute(predictions=predictions, references=labels_np, average="macro")["recall"]
-        # Corrected: Use the variable 'f1' which holds the computed f1_metric result
         f1 = f1_metric.compute(predictions=predictions, references=labels_np, average='macro')["f1"]
-        
+
         return {
             "accuracy": accuracy,
             "macro_precision": precision,
             "macro_recall": recall,
-            "macro_f1": f1 
+            "macro_f1": f1
         }
 
     print("Setting up Hugging Face Trainer...")
-    # Trainer setup
     trainer = Trainer(
         model=model,
         args=training_args,
-        train_dataset=train_dataset,
-        eval_dataset=eval_dataset,
+        train_dataset=train_dataset_tokenized,
+        eval_dataset=eval_dataset_tokenized,
         compute_metrics=compute_metrics,
     )
 
     print("Starting BERT model training...")
-    # Train
     trainer.train()
     print("BERT model training complete.")
 
     print("Evaluating BERT model...")
-    # Evaluate
     results = trainer.evaluate()
     print("BERT model evaluation results:", results)
 
@@ -196,7 +224,6 @@ def train_distilbert_model(
     batch_size: int = 64,
     epochs: int = 3,
     learning_rate: float = 5e-5,
-    class_weight_dict: Dict[int, float] = None,
     random_seed: int = 42
 ) -> tuple[tf.keras.Model, tf.keras.callbacks.History]:
     """
@@ -215,9 +242,6 @@ def train_distilbert_model(
         batch_size (int): Batch size for training and evaluation. Defaults to 64.
         epochs (int): Total number of training epochs to perform. Defaults to 3.
         learning_rate (float): Learning rate for the Adam optimizer. Defaults to 5e-5.
-        class_weight_dict (Dict[int, float], optional): Dictionary mapping class indices
-                                                        to their respective weights.
-                                                        Useful for imbalanced datasets. Defaults to None.
         random_seed (int): Random seed for reproducibility. Defaults to 42.
 
     Returns:
@@ -227,6 +251,13 @@ def train_distilbert_model(
     """
     tf.random.set_seed(random_seed)
     np.random.seed(random_seed)
+
+    # Compute class weights
+    # This function expects y_train to be an array-like object (e.g., Series, list, numpy array)
+    # np.unique will get the unique class labels from y_train
+    class_weights = compute_class_weight('balanced', classes=np.unique(y_train), y=y_train)
+    # Convert to a dictionary mapping class index to weight
+    class_weight_dict = dict(enumerate(class_weights))
 
     print("Initializing DistilBERT tokenizer...")
     tokenizer = DistilBertTokenizerFast.from_pretrained("distilbert-base-uncased")
@@ -287,6 +318,7 @@ def train_distilbert_model(
     print("Compiling model...")
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
+        # optimizer=Adam(learning_rate=learning_rate),
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), # from_logits=True is important for raw model output
         metrics=["accuracy"],
     )
@@ -296,7 +328,7 @@ def train_distilbert_model(
         tf_train,
         validation_data=tf_test,
         epochs=epochs,
-        class_weight=class_weight_dict # Pass class weights if provided
+        class_weight=class_weight_dict
     )
 
     print("DistilBERT model training complete.")
