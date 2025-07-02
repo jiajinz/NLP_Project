@@ -17,18 +17,21 @@ We aim to better understand the performance trade-offs between accuracy and effi
 
 ## 📁 Repository Structure
 
+This project is organized to provide a clear separation of concerns, with dedicated directories for data, source code, and configuration.
+
 ```bash
 NLP_Project/
-├── LICENSE               # MIT License
-├── README.md             # Repository overview with setup instructions
-├── archive               # Old Stuff
-├── data                  # Datasets (or download scripts)
-├── documents             # Documentation, architecture, research notes
-├── figures               # Performance plots
-├── notebooks             # Development and experiment notebooks
-└── requirements.txt      # Project dependencies
+├── LICENSE                           # MIT License.
+├── README.md                         # Repository overview and setup.
+├── pyproject.toml                    # Project configuration.
+├── requirements.txt                  # Project dependencies.
+├── data/                             # Project datasets.
+├── documents/                        # Documentation, architecture, research notes.
+├── figures                           # Performance plots.
+├── notebooks/                        # Development and experiment notebooks.
+├── src/                              # Contains the core source code.
+│   └── emolex/                       # The main  package for the project.
 ```
-_(This section needs to updated development progresses.)_
 
 ## 🚀 Getting Started
 
@@ -40,27 +43,29 @@ cd NLP_Project
 
 ### 2. Create a Virtual Environment
 ```bash
-conda create -n emolex python=3.10
-conda activate emolex
+conda create -n nlp_project python=3.10
+conda activate nlp_project
 ```
 
-### 3. Install Dependencies
+### 3. Install the Package and Dependencies
 ```bash
-pip install -r requirements.txt
+# Ensure you are at the top-level of the NLP_project repository
+pip install -e .
 ```
 
-### 4. Download Dataset
-Place your dataset in the `data/` folder. You can use any CSV with `text` and `label` columns. For example:
-```csv
-text,label
-"I can't sleep and feel exhausted.",Anxiety
-"Everything feels meaningless.",Depression
+### 4. Download NLTK Data
+The preprocessing.py module uses NLTK's stopwords and WordNet lemmatizer. You'll need to download these datasets once:
+```bash
+# Ensure your virtual environment is active
+python -c "import nltk; nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
 ```
 
-### 5. Run Experiments
-Use the notebooks in `/notebooks` to explore preprocessing, model training, and evaluation.
-
-_(This section needs to updated and flushed out.)_
+### 5. Verify Installation
+Verify that the emolex package is importable:
+```bash
+# Ensure your virtual environment is active
+python -c "import emolex; print('emolex imported successfully')"
+```
 
 ## 🧪 Models & Evaluation
 - ✅ Transformers: DistilBERT, BERT
