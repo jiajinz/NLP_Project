@@ -1,3 +1,5 @@
+# src/emolex/preprocessing.py
+
 import os
 import re
 from pathlib import Path
@@ -124,7 +126,7 @@ def train_test_split(df: pd.DataFrame, test_size: float = 0.2, random_state: int
     return X_train, X_test, y_train, y_test
 
 
-def text_vectorization(
+def dl_text_vectorization(
     X_train: pd.Series, 
     X_test: pd.Series, 
     y_train: pd.Series, 
@@ -147,7 +149,7 @@ def text_vectorization(
 
     Returns:
         tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]: A tuple containing:
-            X_train_padded (NumPy array), X_test_padded (NumPy array),
+            X_train_pad_filtered (NumPy array), X_test_pad_filtered (NumPy array),
             y_train_filtered (NumPy array), y_test_filtered (NumPy array)
     """ 
     tokenizer = Tokenizer(num_words=vocab_size, oov_token="<OOV>")
@@ -182,3 +184,41 @@ def text_vectorization(
     # or to inspect the word index later. You could add it to the return tuple
     # if you need it outside this function. For now, sticking to original return.
     return X_train_pad_filtered, X_test_pad_filtered, y_train_filtered, y_test_filtered
+
+def tfidf_text_vectorization(
+    X_train: pd.Series, 
+    X_test: pd.Series, 
+    max_features: int = 10000
+) -> tuple[np.ndarray, np.ndarray, TfidfVectorizer]:
+    """
+    Performs TF-IDF (Term Frequency-Inverse Document Frequency) feature extraction
+    on training and testing text data.
+
+    Args:
+        X_train (pd.Series): Training text data (e.g., 'clean_text' column).
+        X_test (pd.Series): Testing text data (e.g., 'clean_text' column).
+        max_features (int): The maximum number of features (vocabulary size) for TF-IDF.
+                            Only the top `max_features` terms ordered by term frequency
+                            across the corpus will be used. Defaults to 10000.
+
+    Returns:
+        tuple[np.ndarray, np.ndarray, TfidfVectorizer]: A tuple containing:
+            - X_train_tfidf (np.ndarray): TF-IDF features for the training set.
+            - X_test_tfidf (np.ndarray): TF-IDF features for the testing set.
+            - vectorizer (TfidfVectorizer): The fitted TfidfVectorizer object,
+                                            essential for transforming new, unseen text data.
+    """
+    print(f"Starting TF-IDF feature extraction with max_features={max_features}...")
+    # TF-IDF feature extraction
+    vectorizer = TfidfVectorizer(max_features=max_features)
+    
+    # Fit the vectorizer on X_train and transform X_train
+    X_train_tfidf = vectorizer.fit_transform(X_train)
+    
+    # Transform X_test using the *fitted* vectorizer from X_train
+    X_test_tfidf = vectorizer.transform(X_test)
+
+    print(f"TF-IDF transformed X_train_tfidf shape: {X_train_tfidf.shape}")
+    print(f"TF-IDF transformed X_test_tfidf shape: {X_test_tfidf.shape}")
+
+    return X_train_tfidf, X_test_tfidf, vectorizer
