@@ -80,7 +80,7 @@ def generate_confusion_matrix(
 def generate_classification_report(
     y_true: np.ndarray | pd.Series, 
     y_pred: np.ndarray | pd.Series, 
-    target_names: list[str] = None
+    class_labels: list[str] = None
 ) -> str:
     """
     Generates and prints a classification report.
@@ -88,12 +88,11 @@ def generate_classification_report(
     Args:
         y_true (np.ndarray | pd.Series): True labels.
         y_pred (np.ndarray | pd.Series): Predicted labels.
-        target_names (list[str], optional): List of string names for the labels.
+        class_labels (list[str], optional): List of string names for the labels.
                                             If None, numerical labels will be used. Defaults to None.
 
     Returns:
         str: The formatted classification report.
     """
-    report = classification_report(y_true, y_pred, target_names=target_names)
+    report = classification_report(y_true, y_pred, labels=class_labels)
     print(report)
-    return report

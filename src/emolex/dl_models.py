@@ -13,7 +13,7 @@ from datasets import Dataset
 import evaluate
 
 
-def lstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim: int = 128) -> tf.keras.Model:
+def lstm_model(num_classes: int, vocab_size: int = 10000, max_len: int = 100, embedding_dim: int = 128) -> tf.keras.Model:
     """
     Builds, compiles, and summarizes a Sequential LSTM model for text classification.
 
@@ -21,16 +21,16 @@ def lstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim: i
         num_classes (int): The number of output classes for the classification task.
                            This determines the size of the final Dense layer.
         vocab_size (int): The size of the vocabulary (number of unique words + 1 for padding/OOV).
-                          This is the `input_dim` for the Embedding layer.
+                          This is the `input_dim` for the Embedding layer. Defaults to 10000.
         max_len (int): The maximum sequence length for input texts.
-                       This is the `input_length` for the Embedding layer.
+                       This is the `input_length` for the Embedding layer. Defaults to 100.
         embedding_dim (int): The dimension of the word embeddings. Defaults to 128.
 
     Returns:
         tf.keras.Model: The compiled Keras Sequential model.
     """
     model = Sequential([
-        Embedding(input_dim=vocab_size, output_dim=embedding_dim, input_length=max_len),
+        Embedding(input_dim=vocab_size, output_dim=embedding_dim),
         LSTM(128, return_sequences=True, dropout=0.3, recurrent_dropout=0.3),
         Dropout(0.3),
         LSTM(64),
@@ -54,7 +54,7 @@ def lstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim: i
     return model
 
 
-def bilstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim: int = 128) -> tf.keras.Model:
+def bilstm_model(num_classes: int, vocab_size: int = 10000, max_len: int = 100, embedding_dim: int = 128) -> tf.keras.Model:
     """
     Builds, compiles, and summarizes a Sequential Bidirectional LSTM model for text classification.
 
@@ -62,16 +62,16 @@ def bilstm_model(num_classes: int, vocab_size: int, max_len: int, embedding_dim:
         num_classes (int): The number of output classes for the classification task.
                            This determines the size of the final Dense layer.
         vocab_size (int): The size of the vocabulary (number of unique words + 1 for padding/OOV).
-                          This is the `input_dim` for the Embedding layer.
+                          This is the `input_dim` for the Embedding layer. Defaults to 10000.
         max_len (int): The maximum sequence length for input texts.
-                       This is the `input_length` for the Embedding layer.
+                       This is the `input_length` for the Embedding layer. Defaults to 100.
         embedding_dim (int): The dimension of the word embeddings. Defaults to 128.
 
     Returns:
         tf.keras.Model: The compiled Keras Sequential model.
     """
     model = Sequential([
-        Embedding(input_dim=vocab_size, output_dim=embedding_dim, input_length=max_len),
+        Embedding(input_dim=vocab_size, output_dim=embedding_dim),
         Bidirectional(LSTM(128, return_sequences=True, dropout=0.3, recurrent_dropout=0.3)),
         Dropout(0.3),
         Bidirectional(LSTM(64, dropout=0.3, recurrent_dropout=0.3)),

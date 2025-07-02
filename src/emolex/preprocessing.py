@@ -3,12 +3,14 @@
 import os
 import re
 from pathlib import Path
+import numpy as np
 import pandas as pd
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from sklearn.preprocessing import LabelEncoder
+from sklearn.feature_extraction.text import TfidfVectorizer 
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
@@ -76,27 +78,33 @@ def clean_text(text: str) -> str:
     return " ".join(tokens)
 
 
-def encode_sentiment_labels(df: pd.DataFrame) -> pd.DataFrame:
+def encode_sentiment_labels(df: pd.DataFrame, label_col: str = 'label') -> tuple[pd.DataFrame, LabelEncoder]:
     """
-    Encodes categorical 'label' column into numerical 'label_encoded' using LabelEncoder.
+    Encodes a categorical column (default 'label') into a numerical 'label_encoded' column
+    using LabelEncoder.
 
     Args:
-        df (pd.DataFrame): The input DataFrame containing a 'label' column.
+        df (pd.DataFrame): The input DataFrame.
+        label_col (str): The name of the column containing categorical labels to encode.
+                         Defaults to 'label'.
 
     Returns:
-        pd.DataFrame: The DataFrame with a new 'label_encoded' column.
+        tuple[pd.DataFrame, LabelEncoder]: A tuple containing:
+            - The DataFrame with a new 'label_encoded' column.
+            - The fitted LabelEncoder object.
     """
     encoder = LabelEncoder()
-    df['label_encoded'] = encoder.fit_transform(df['label'])
+    df['label_encoded'] = encoder.fit_transform(df[label_col])
 
     # Print encoding map for reference
+    # Using zip with sorted classes ensures a consistent order for the map
     label_map = dict(zip(encoder.classes_, encoder.transform(encoder.classes_)))
     print("Label Encoding Map:", label_map)
     
-    return df
+    return df, encoder
 
 
-def train_test_split(df: pd.DataFrame, test_size: float = 0.2, random_state: int = 42) -> tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
+def split_data(df: pd.DataFrame, test_size: float = 0.2, random_state: int = 42) -> tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
     """
     Splits the DataFrame into training and testing sets based on 'clean_text' (X)
     and 'label_encoded' (y) columns. Ensures stratification by 'y'.
@@ -115,7 +123,7 @@ def train_test_split(df: pd.DataFrame, test_size: float = 0.2, random_state: int
     y = df['label_encoded']
     
     # Call the imported scikit-learn's train_test_split function (aliased as sk_train_test_split)
-    X_train, X_test, y_train, y_test = sk_train_test_split(
+    X_train, X_test, y_train, y_test = train_test_split(
         X, 
         y, 
         test_size=test_size, 

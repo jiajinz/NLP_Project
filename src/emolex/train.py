@@ -4,6 +4,7 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 from typing import Union, Dict 
+from tensorflow.keras.callbacks import Callback, EarlyStopping
 
 # --- Hugging Face Imports ---
 from transformers import (
@@ -26,7 +27,6 @@ def train_dl_model(
     y_test: Union[np.ndarray | pd.Series],
     epochs: int = 10, 
     batch_size: int = 32, 
-    callbacks: list[Callback] = None,
     random_seed: int = 42 
 ) -> tuple[tf.keras.Model, tf.keras.callbacks.History]:
     """
@@ -40,8 +40,6 @@ def train_dl_model(
         y_test (np.ndarray | pd.Series): Validation labels (encoded).
         epochs (int): Number of training epochs. Defaults to 10.
         batch_size (int): Number of samples per gradient update. Defaults to 32.
-        callbacks (list[tf.keras.callbacks.Callback]): List of Keras callbacks to apply during training.
-                                                       Defaults to None.
         random_seed (int): Seed for TensorFlow's random operations for reproducibility. Defaults to 42.
 
     Returns:
@@ -51,10 +49,15 @@ def train_dl_model(
     """
     # Set tensorflow random seed for reproducibility
     tf.random.set_seed(random_seed)
-
-    # Ensure callbacks is an empty list if None
-    if callbacks is None:
-        callbacks = [] 
+    
+    # Define callbacks
+    early_stopping = EarlyStopping(
+        monitor='val_accuracy',    
+        patience=3,               
+        restore_best_weights=True,
+        verbose=1
+    )
+    callbacks = [early_stopping]
 
     print(f"Starting model training for {epochs} epochs with batch size {batch_size}...")
     
