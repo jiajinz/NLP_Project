@@ -21,23 +21,23 @@ The project benchmarks include:
 <br>
 
 __Model Evaluation & Comparison__:
-  * Quantitative metrics: Accuracy, Macro F1-score, Precision, Recall, and Confusion Matrix
-  * Efficiency metrics: Training time and resource usage (i.e., FLOPS)
+  * Performance metrics: Accuracy, Macro F1-score, Precision, Recall, and Confusion Matrix
+  * Efficiency metrics: Training time
 
 Here is a comparative summary of the performance across models.
 
-Model        | Accuracy | Precision | Recall | F1 Score | Training Time | FLOPS
--------------|----------|-----------|--------|----------|---------------|---
-DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K s/epoch) |
-BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 s/epoch) | 
-BiLSTM       |  0.77    | 0.72      | 0.69   | 0.70     | Low (~40 s/epoch) | 
-LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~240 s/epoch) | 
-TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible (~21s total) | 
-TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible (~16s total) | 
+Model        | Accuracy | Precision | Recall | F1 Score | Training Time  
+-------------|----------|-----------|--------|----------|---------------
+DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K s/epoch) 
+BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~1800 s/epoch) 
+BiLSTM       |  0.77    | 0.72      | 0.69   | 0.70     | Low (~40 s/epoch) 
+LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~240 s/epoch) 
+TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low, Negligible (~21s total) 
+TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low, Negligible (~16s total)  
 
 ### <u>Preliminary Experiments</u>
 
-_(Section needs to be populated.)_
+Before committing to full-scale model training and evaluation, we conducted a series of preliminary experiments to validate the feasibility and effectiveness of our selected approaches. These proof-of-concept tests involved training simplified versions of our models—such as smaller LSTM networks and pre-trained transformer models with reduced sequence lengths—on a subset of the dataset. The primary objective was to assess whether the models could learn meaningful patterns from the data and to identify potential challenges related to class imbalance, tokenization issues, or overfitting. We also tested different preprocessing pipelines, embedding strategies, and hyperparameters to determine which configurations yielded stable and interpretable results. These early experiments provided valuable insights into model behavior, training stability, and resource requirements, enabling us to refine our approach and optimize our workflow before scaling to the full dataset. By validating each model’s viability in this controlled setting, we ensured that subsequent training phases would be both efficient and effective.
 
 ## 2. Model Implementation
 
@@ -46,11 +46,11 @@ _(Section needs to be populated.)_
 In selecting frameworks and libraries for model development, we focused on aligning technical requirements with the strengths of each tool and the team’s familiarity. For deep learning models such as LSTM and BiLSTM, we chose TensorFlow and Keras due to their high-level API support, seamless GPU acceleration, and strong ecosystem for building and training recurrent neural networks. For transformer-based models like DistilBERT, we adopted the Hugging Face Transformers library, which offers pre-trained state-of-the-art models, easy-to-use tokenizers, and integration with both PyTorch and TensorFlow backends. Given our emphasis on rapid experimentation and access to domain-specific checkpoints, Hugging Face proved invaluable for fine-tuning and evaluating large language models. In parallel, for classical machine learning approaches like Logistic Regression and SVM, we used scikit-learn for its robust suite of preprocessing tools, evaluation metrics, and pipeline capabilities. The decision to use these frameworks was further informed by the team's proficiency, allowing us to develop modular, reproducible code efficiently while taking advantage of each library’s strengths in training, deployment, and experimentation.
 
 ### <u>Dataset Preparation</u>
-In preparing the mental health sentiment dataset for model training and evaluation, we implemented a preprocessing and cleaning pipeline to ensure data quality and consistency. The raw dataset consisted of short text statements labeled with one of seven mental health categories (e.g., anxiety, depression, stress, bipolar, suicide, etc.). We began by removing duplicates, correcting encoding issues, and stripping irrelevant characters such as excessive punctuation or special symbols. To normalize the text, we converted all inputs to lowercase and applied tokenization tailored to the chosen models. We also handled class imbalance by analyzing label distributions and applying techniques such as stratified splitting to ensure balanced representation across training, validation, and test sets. This structured and consistent preprocessing ensured the models could learn effectively while minimizing noise and bias in the input data.
+In preparing the mental health sentiment dataset for model training and evaluation, we implemented a preprocessing and cleaning pipeline to ensure data quality and consistency. The raw dataset, [_Sentiment Analysis for Mental Health_. Kaggle. (Retrieved 2025)](https://www.kaggle.com/datasets/suchintikasarkar/sentiment-analysis-for-mental-health), consisted of short text statements labeled with one of seven mental health categories (e.g., anxiety, depression, stress, bipolar, suicide, etc.). We began by removing duplicates, correcting encoding issues, and stripping irrelevant characters such as excessive punctuation or special symbols. To normalize the text, we converted all inputs to lowercase and applied tokenization tailored to the chosen models. We also handled class imbalance by analyzing label distributions and applying techniques such as stratified splitting to ensure balanced representation across training, validation, and test sets. This structured and consistent preprocessing ensured the models could learn effectively while minimizing noise and bias in the input data.
 
 ### <u>Model Development</u>
 
-_(Section needs to be populated.)_
+During model development, we prioritized modularity and reusability to support experimentation, scalability, and collaboration. Each model—ranging from classical machine learning approaches to LSTM networks and transformer-based architectures—was implemented within a consistent, organized codebase structure. By abstracting common utilities (e.g., dataset loaders, metric calculators, and logging functions), we reduced code duplication and improved clarity. This modular design not only streamlined development but also made it easier to integrate additional models with minimal changes.
 
 ### <u>Training & Fine-Tuning</u>
 The training and fine-tuning process for our models was tailored to the specific architecture and learning dynamics of each approach. For transformer-based models such as DistilBERT and BERT, we leveraged transfer learning by fine-tuning pre-trained weights from the Hugging Face Transformers library on our mental health sentiment dataset. This approach allowed us to benefit from rich contextual representations learned from large-scale corpora, while adjusting the models to our domain-specific task. Fine-tuning involved optimizing hyperparameters such as learning rate, batch size, number of epochs, and weight decay using stratified validation splits. For recurrent models like LSTM and BiLSTM, we experimented with different embedding dimensions, hidden units, dropout rates, and optimizers to balance performance and prevent overfitting. Classical models, including TF-IDF combined with Logistic Regression and Support Vector Machines (SVM), were trained with scikit-learn pipelines, tuning hyperparameters like regularization strength and kernel types through grid search and cross-validation. This multi-model training framework ensured each model was appropriately tuned for our classification task while allowing for fair comparisons across different methodological paradigms.
@@ -61,7 +61,6 @@ To evaluate the performance of our models in classifying mental health-related s
 ## 3. GitHub Repository Setup & Code Management
 The project repository is located here:
 https://github.com/jiajinz/NLP_Project/tree/curtis
-
 
 ### Repository Structure
 ```
