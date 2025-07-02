@@ -94,5 +94,5 @@ def generate_classification_report(
     Returns:
         str: The formatted classification report.
     """
-    report = classification_report(y_true, y_pred, labels=class_labels)
+    report = classification_report(y_true, y_pred, target_names=class_labels) 
     print(report)
