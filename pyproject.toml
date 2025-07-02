@@ -3,10 +3,13 @@ name = "emolex"
 version = "0.1.0"
 description = "EMOLEX: Emotion and Language Exploration for Mental Health"
 authors = [
-    { name = "Your Name", email = "your.email@example.com" }
+    {name="Jiajin Zhou", email="zhou.j@northeastern.edu" },
+    {name="Jie Lian", email="lian.j@northeastern.edu" },
+    {name="Peter Mink", email="mink.p@northeastern.edu" },
+    {name="Curtis Neiderer", email="neiderer.c@northeastern.edu" }
 ]
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 requires-python = ">=3.10,<3.12"
 keywords = ["nlp", "mental-health", "transformers", "tensorflow", "sentiment-analysis"]
 
@@ -40,3 +43,8 @@ dev = [
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+# Find packages within the 'src' directory
+[tool.setuptools.packages.find]
+where = ["src"] # Look for packages in the 'src' directory
+
