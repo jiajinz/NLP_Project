@@ -15,6 +15,7 @@ from transformers import (
     BertTokenizer,
     BertForSequenceClassification,
     DistilBertTokenizerFast,
+    DistilBertForSequenceClassification,
     TFDistilBertForSequenceClassification,
     DataCollatorWithPadding,
     Trainer, 
@@ -270,7 +271,7 @@ def train_distilbert_model_v2(
     train_hf = Dataset.from_dict({'text': X_train.tolist(), 'label': y_train.tolist()})
     test_hf = Dataset.from_dict({'text': X_test.tolist(), 'label': y_test.tolist()})
     
-    print("Loading BERT tokenizer...")
+    print("Loading DistilBERT tokenizer...")
     tokenizer = DistilBertTokenizerFast.from_pretrained("distilbert-base-uncased")
     
     # Tokenization function (uses max_len from function parameters)
@@ -290,9 +291,9 @@ def train_distilbert_model_v2(
     test_hf_tokenized.set_format("torch", columns=["input_ids", "attention_mask", "label"])
     # ----------------------------------------------------------------
 
-    print("Loading pre-trained BERT model...")
+    print("Loading pre-trained DistilBERT model...")
     # model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=num_classes)
-    model = TFDistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=num_classes)
+    model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=num_classes)
 
     print("Defining training arguments...")
     training_args = TrainingArguments(
