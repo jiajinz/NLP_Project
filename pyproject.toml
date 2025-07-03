@@ -10,7 +10,7 @@ authors = [
 ]
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.10,<3.12"
+requires-python = ">=3.9,<3.12"
 keywords = ["nlp", "mental-health", "transformers", "tensorflow", "sentiment-analysis"]
 
 dependencies = [
