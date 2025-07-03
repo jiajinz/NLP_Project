@@ -6,6 +6,7 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from typing import Union
 
 
 def plot_training_history(history: tf.keras.callbacks.History) -> tuple[plt.Figure, plt.Axes]:
@@ -40,8 +41,8 @@ def plot_training_history(history: tf.keras.callbacks.History) -> tuple[plt.Figu
 
 
 def generate_confusion_matrix(
-    y_true: np.ndarray | pd.Series, 
-    y_pred: np.ndarray | pd.Series, 
+    y_true: Union[np.ndarray, pd.Series],
+    y_pred: Union[np.ndarray, pd.Series], 
     class_labels: list[str] = None
 ) -> tuple[plt.Figure, plt.Axes]:
     """
@@ -78,8 +79,8 @@ def generate_confusion_matrix(
     return fig, ax
 
 def generate_classification_report(
-    y_true: np.ndarray | pd.Series, 
-    y_pred: np.ndarray | pd.Series, 
+    y_true: Union[np.ndarray, pd.Series], 
+    y_pred: Union[np.ndarray, pd.Series], 
     class_labels: list[str] = None
 ) -> str:
     """
