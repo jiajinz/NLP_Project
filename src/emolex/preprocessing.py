@@ -13,6 +13,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+from transformers import BertTokenizer, BertTokenizerFast, DistilbertTokenizer, DistilbertTokenizerFast
+from datasets import Dataset
 
 # NLTK Downloads
 try:
@@ -193,6 +195,7 @@ def dl_text_vectorization(
     # if you need it outside this function. For now, sticking to original return.
     return X_train_pad_filtered, X_test_pad_filtered, y_train_filtered, y_test_filtered
 
+
 def tfidf_text_vectorization(
     X_train: pd.Series, 
     X_test: pd.Series, 
@@ -230,3 +233,67 @@ def tfidf_text_vectorization(
     print(f"TF-IDF transformed X_test_tfidf shape: {X_test_tfidf.shape}")
 
     return X_train_tfidf, X_test_tfidf, vectorizer
+
+
+def hf_vectorization(
+    model_type: str,
+    X_train: Union[np.ndarray, pd.Series, List[str]],
+    X_test: Union[np.ndarray, pd.Series, List[str]],
+    y_train: Union[np.ndarray, pd.Series, List[int]],
+    y_test: Union[np.ndarray, pd.Series, List[int]],
+    max_len: int = 100
+) -> Tuple[Dataset, Dataset]:
+    """
+    Performs tokenization and prepares datasets for Hugging Face Transformer models.
+
+    This function converts raw text and labels into Hugging Face Dataset objects,
+    tokenizes them using the specified model's tokenizer, and sets the format
+    to PyTorch tensors for use with the Hugging Face Trainer.
+
+    Args:
+        model_type (str): The type of the transformer model. Expected values are
+                          "bert" or "distilbert".
+        X_train (Union[np.ndarray, pd.Series, List[str]]): Training text data.
+        X_test (Union[np.ndarray, pd.Series, List[str]]): Test/Evaluation text data.
+        y_train (Union[np.ndarray, pd.Series, List[int]]): Training labels (integer-encoded).
+        y_test (Union[np.ndarray, pd.Series, List[int]]): Test/Evaluation labels (integer-encoded).
+        max_len (int): The maximum sequence length for tokenization. Defaults to 100.
+
+    Returns:
+        Tuple[datasets.Dataset, datasets.Dataset]: A tuple containing the tokenized
+        training and test Hugging Face Dataset objects, formatted for PyTorch.
+
+    Raises:
+        ValueError: If an unsupported `model_type` is provided.
+    """
+    print("Creating Hugging Face Datasets from input data...")
+    train_hf = Dataset.from_dict({'text': X_train.tolist(), 'label': y_train.tolist()})
+    test_hf = Dataset.from_dict({'text': X_test.tolist(), 'label': y_test.tolist()})
+
+    # Load appropriate tokenizer
+    if model_type == "bert":
+        print("Loading BERT tokenizer...")
+        tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+    elif model_type == "distilbert": # Corrected syntax
+        print("Loading DistilBERT tokenizer...")
+        tokenizer = DistilBertTokenizerFast.from_pretrained("distilbert-base-uncased") # Using DistilBertTokenizerFast
+    else:
+        raise ValueError(f"Unsupported model_type: '{model_type}'. Choose 'bert' or 'distilbert'.")
+
+    print("Tokenizing datasets...")
+    def tokenize_function(example):
+        return tokenizer(example["text"], padding="max_length", truncation=True, max_length=max_len)
+
+    train_hf_tokenized = train_hf.map(tokenize_function, batched=True, remove_columns=["text"])
+    test_hf_tokenized = test_hf.map(tokenize_function, batched=True, remove_columns=["text"])
+
+    # Ensure labels are native integers for the model (good practice, though Trainer often handles this)
+    train_hf_tokenized = train_hf_tokenized.map(lambda x: {"label": int(x["label"])})
+    test_hf_tokenized = test_hf_tokenized.map(lambda x: {"label": int(x["label"])})
+
+    # Set format to PyTorch tensors for Trainer (Hugging Face Trainer's default backend)
+    # The Trainer expects 'input_ids', 'attention_mask', and 'labels'
+    train_hf_tokenized.set_format("torch", columns=["input_ids", "attention_mask", "label"])
+    test_hf_tokenized.set_format("torch", columns=["input_ids", "attention_mask", "label"])
+
+    return train_hf_tokenized, test_hf_tokenized
