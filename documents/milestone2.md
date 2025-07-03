@@ -28,12 +28,12 @@ Here is a comparative summary of the performance across models.
 
 Model        | Accuracy | Precision | Recall | F1 Score | Training Time  
 -------------|----------|-----------|--------|----------|---------------
-DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Very High (~3K s/epoch) 
 BERT         |  0.81    | 0.78      | 0.78   | 0.78     | High (~600 s/epoch) 
+DistilBERT   |  0.80    | 0.73      | 0.80   | 0.75     | Medium (~300 s/epoch) 
 BiLSTM       |  0.77    | 0.72      | 0.69   | 0.70     | Low (~40 s/epoch) 
 LSTM         |  0.75    | 0.70      | 0.67   | 0.68     | Medium (~240 s/epoch) 
 TF-IDF + LR  |  0.76    | 0.74      | 0.67   | 0.70     | Very Low (~21s total) 
-TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low (~16s total)  
+TF-IDF + SVM |  0.75    | 0.73      | 0.70   | 0.71     | Very Low (~16s total) 
 
 ### <u>Preliminary Experiments</u>
 
