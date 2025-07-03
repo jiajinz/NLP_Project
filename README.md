@@ -29,9 +29,8 @@ NLP_Project/
 ├── documents/                        # Documentation, architecture, research notes.
 ├── experiments/                      # Experiment notebooks.
 ├── figures                           # Performance plots.
-├── notebooks/                        # Development notebooks.
 └── src/                              # Contains the core source code.
-    └── emolex/                       # The main  package for the project.
+    └── emolex/                       # The main package for the project.
 ```
 
 ## 🚀 Getting Started

@@ -75,9 +75,8 @@ NLP_Project/
 ├── documents/                        # Documentation, architecture, research notes.
 ├── experiments/                      # Experiment notebooks.
 ├── figures                           # Performance plots.
-├── notebooks/                        # Development notebooks.
 └── src/                              # Contains the core source code.
-    └── emolex/                       # The main  package for the project.
+    └── emolex/                       # The main package for the project.
 ```
 
 Note: To get the most detailed and up-to-date repository structure, navigate to the top-level of the repository and within `bash` run `tree .`. This will return every file and directory, not just the main ones summarized here.
