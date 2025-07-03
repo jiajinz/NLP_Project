@@ -8,8 +8,6 @@ from sklearn.utils.class_weight import compute_class_weight
 from tensorflow.keras.callbacks import Callback, EarlyStopping
 from tensorflow.keras.optimizers import Adam
 import torch
-
-# --- Hugging Face Imports ---
 from transformers import (
     BertTokenizer,
     BertForSequenceClassification,
@@ -23,7 +21,6 @@ from transformers import (
 )
 from datasets import Dataset
 import evaluate
-# ----------------------------
 
 
 def train_dl_model(
@@ -196,115 +193,6 @@ def train_hf_model(
     print("Model evaluation results:", results)
 
     return trainer, results
-
-
-# def train_distilbert_model(
-#     train_dataset: Dataset,
-#     eval_dataset: Dataset,
-#     num_classes: int,
-#     output_dir: str = "./distilbert_output",
-#     num_train_epochs: int = 3,
-#     per_device_batch_size: int = 16,
-#     logging_dir: str = "./logs",
-#     random_seed: int = 42
-# ) -> Tuple[Trainer, dict]:
-#     """
-#     Trains/Fine-tunes a Hugging Face DistilBertForSequenceClassification model (PyTorch backend).
-
-#     This function expects pre-tokenized Hugging Face Dataset objects for training
-#     and evaluation, loads the DistilBERT model, and trains it using the
-#     Hugging Face Trainer API.
-
-#     Args:
-#         train_dataset (datasets.Dataset): The tokenized training dataset (Hugging Face Dataset object).
-#         eval_dataset (datasets.Dataset): The tokenized evaluation dataset (Hugging Face Dataset object).
-#         num_classes (int): The number of output classes for the classification task.
-#         output_dir (str): Directory to save model checkpoints and outputs. Defaults to "./distilbert_output".
-#         num_train_epochs (int): Total number of training epochs to perform. Defaults to 3.
-#         per_device_batch_size (int): Batch size per GPU/CPU for training and evaluation. Defaults to 16.
-#         logging_dir (str): Directory for storing logs. Defaults to "./logs".
-#         random_seed (int): Random seed for reproducibility. Defaults to 42.
-
-#     Returns:
-#         tuple[Trainer, dict]: A tuple containing:
-#             - The Hugging Face Trainer object after training.
-#             - A dictionary of evaluation results.
-#     """
-#     # Set seed for reproducibility
-#     tf.random.set_seed(random_seed) # For TensorFlow operations if any are used in the broader environment
-#     np.random.seed(random_seed)
-#     torch.manual_seed(random_seed)
-#     if torch.cuda.is_available():
-#         torch.cuda.manual_seed_all(random_seed)
-
-#     print("Loading pre-trained DistilBERT model...")
-#     # Using PyTorch model class as implemented in the original function
-#     model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=num_classes)
-
-#     print("Defining training arguments...")
-#     training_args = TrainingArguments(
-#         output_dir=output_dir,
-#         per_device_train_batch_size=per_device_batch_size,
-#         per_device_eval_batch_size=per_device_batch_size,
-#         num_train_epochs=num_train_epochs,
-#         logging_dir=logging_dir,
-#         save_strategy="epoch",
-#         report_to="none", # Keep as 'none' if you don't want external logging tools (e.g., TensorBoard)
-#         seed=random_seed,
-#         evaluation_strategy="epoch",
-#         load_best_model_at_end=True,
-#         metric_for_best_model="macro_f1", # Changed to macro_f1 (consistent with compute_metrics)
-#         greater_is_better=True,
-#     )
-
-#     print("Loading evaluation metrics...")
-#     accuracy_metric = evaluate.load("accuracy")
-#     precision_metric = evaluate.load("precision")
-#     recall_metric = evaluate.load("recall")
-#     f1_metric = evaluate.load("f1")
-
-#     def compute_metrics(eval_pred):
-#         logits, labels = eval_pred
-#         predictions = np.argmax(logits, axis=-1)
-
-#         # Ensure labels are numpy arrays for metrics computation if they are not already
-#         labels_np = labels.numpy() if hasattr(labels, 'numpy') else labels
-
-#         accuracy = accuracy_metric.compute(predictions=predictions, references=labels_np)["accuracy"]
-#         # For multi-class, 'macro' average is common
-#         precision = precision_metric.compute(predictions=predictions, references=labels_np, average="macro")["precision"]
-#         recall = recall_metric.compute(predictions=predictions, references=labels_np, average="macro")["recall"]
-#         f1 = f1_metric.compute(predictions=predictions, references=labels_np, average='macro')["f1"]
-
-#         return {
-#             "accuracy": accuracy,
-#             "macro_precision": precision,
-#             "macro_recall": recall,
-#             "macro_f1": f1 # This is the metric used for best model selection
-#         }
-
-#     print("Setting up Hugging Face Trainer...")
-#     # Instantiate the EarlyStoppingCallback
-#     early_stopping_callback = EarlyStoppingCallback(early_stopping_patience=3)
-
-#     trainer = Trainer(
-#         model=model,
-#         args=training_args,
-#         train_dataset=train_dataset, 
-#         eval_dataset=eval_dataset,   
-#         compute_metrics=compute_metrics,
-#         callbacks=[early_stopping_callback] # Pass the instance to the callbacks list
-#     )
-
-#     print("Starting DistilBERT model training...")
-#     trainer.train()
-#     print("DistilBERT model training complete.")
-
-#     print("Evaluating DistilBERT model...")
-#     results = trainer.evaluate()
-#     print("DistilBERT model evaluation results:", results)
-
-#     return trainer, results
 
 
 def train_distilbert_model_tf(
