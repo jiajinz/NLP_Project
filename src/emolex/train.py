@@ -271,7 +271,7 @@ def train_distilbert_model_v2(
     test_hf = Dataset.from_dict({'text': X_test.tolist(), 'label': y_test.tolist()})
     
     print("Loading BERT tokenizer...")
-    tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+    tokenizer = DistilBertTokenizerFast.from_pretrained("distilbert-base-uncased")
     
     # Tokenization function (uses max_len from function parameters)
     def tokenize_function(example):
@@ -291,7 +291,8 @@ def train_distilbert_model_v2(
     # ----------------------------------------------------------------
 
     print("Loading pre-trained BERT model...")
-    model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=num_classes)
+    # model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=num_classes)
+    model = TFDistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=num_classes)
 
     print("Defining training arguments...")
     training_args = TrainingArguments(
