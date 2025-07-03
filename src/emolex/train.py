@@ -88,13 +88,13 @@ def train_bert_model(
     X_test: Union[np.ndarray, pd.Series, list[str]],
     y_test: Union[np.ndarray, pd.Series, list[int]],
     num_classes: int,
-    max_len: int = 128, # Added max_len parameter for tokenization
+    max_len: int = 128,
     output_dir: str = "./bert_output",
-    num_train_epochs: int = 3, # Changed docstring default to 3
+    num_train_epochs: int = 10,
     per_device_batch_size: int = 16,
     logging_dir: str = "./logs",
     random_seed: int = 42
-) -> Tuple[Trainer, dict]: # Using Tuple for Python < 3.9 compatibility
+) -> Tuple[Trainer, dict]: 
     """
     Trains/Fine-tunes a Hugging Face BertForSequenceClassification model.
 
@@ -127,17 +127,18 @@ def train_bert_model(
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(random_seed)
 
+    # TODO: Move dataset creation and tokenization to preprocessing.py
+    print("Creating Hugging Face Datasets from input data...")
+    # --- CRITICAL FIX: Create datasets from X_train/y_train etc. ---
+    train_dataset_hf = Dataset.from_dict({'text': X_train.tolist(), 'label': y_train.tolist()})
+    eval_dataset_hf = Dataset.from_dict({'text': X_test.tolist(), 'label': y_test.tolist()})
+
     print("Loading BERT tokenizer...")
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
     # Tokenization function (uses max_len from function parameters)
     def tokenize_function(example):
         return tokenizer(example["text"], padding="max_length", truncation=True, max_length=max_len)
-
-    print("Creating Hugging Face Datasets from input data...")
-    # --- CRITICAL FIX: Create datasets from X_train/y_train etc. ---
-    train_dataset_hf = Dataset.from_dict({'text': X_train.tolist(), 'label': y_train.tolist()})
-    eval_dataset_hf = Dataset.from_dict({'text': X_test.tolist(), 'label': y_test.tolist()})
 
     print("Tokenizing datasets...")
     train_dataset_tokenized = train_dataset_hf.map(tokenize_function, batched=True, remove_columns=["text"])
