@@ -18,7 +18,8 @@ from transformers import (
     TFDistilBertForSequenceClassification,
     DataCollatorWithPadding,
     Trainer, 
-    TrainingArguments
+    TrainingArguments,
+    EarlyStoppingCallback
 )
 from datasets import Dataset
 import evaluate
@@ -202,6 +203,7 @@ def train_bert_model(
         train_dataset=train_dataset_tokenized,
         eval_dataset=eval_dataset_tokenized,
         compute_metrics=compute_metrics,
+        callbacks=[EarlyStoppingCallback(early_stopping_patience=3)]
     )
 
     print("Starting BERT model training...")
