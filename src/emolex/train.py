@@ -29,9 +29,9 @@ import evaluate
 def train_dl_model(
     model: tf.keras.Model, 
     X_train_pad: np.ndarray, 
-    y_train: Union[np.ndarray | pd.Series],
+    y_train: Union[np.ndarray, pd.Series],
     X_test_pad: np.ndarray, 
-    y_test: Union[np.ndarray | pd.Series],
+    y_test: Union[np.ndarray, pd.Series],
     epochs: int = 10, 
     batch_size: int = 32, 
     random_seed: int = 42 
