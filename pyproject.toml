@@ -1,0 +1,51 @@
+[project]
+name = "emolex"
+version = "0.1.0"
+description = "EMOLEX: Emotion and Language Exploration for Mental Health"
+authors = [
+    {name="Jiajin Zhou", email="zhou.j@northeastern.edu" },
+    {name="Jie Lian", email="lian.j@northeastern.edu" },
+    {name="Peter Mink", email="mink.p@northeastern.edu" },
+    {name="Curtis Neiderer", email="neiderer.c@northeastern.edu" }
+]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9,<3.12"
+keywords = ["nlp", "mental-health", "transformers", "tensorflow", "sentiment-analysis"]
+
+dependencies = [
+    "tensorflow>=2.18",
+    "transformers==4.38.2",
+    "scikit-learn>=1.2",
+    "pandas>=1.5",
+    "numpy>=1.24",
+    "matplotlib>=3.6",
+    "seaborn>=0.12",
+    "jupyterlab>=3.5",
+    "scipy>=1.10",
+    "datasets>=2.14",
+    "nltk>=3.8",
+    "tqdm>=4.65",
+    "pyyaml>=6.0",
+    "accelerate==0.27.2"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "flake8",
+    "pytest",
+    "jupyter",
+    "pipreqs",
+    "pipreqsnb"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# Find packages within the 'src' directory
+[tool.setuptools.packages.find]
+where = ["src"] # Look for packages in the 'src' directory
+
