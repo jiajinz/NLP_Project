@@ -122,8 +122,8 @@ MIT License — feel free to use, share, and modify.
 Pull requests welcome! For major changes, please open an issue first to discuss what you’d like to change.
 
 ## 🧠 Project Maintainers
-- [Jiajin Zhou](mailto:zhou.j@northeastern.edu)
-- [Jie Lian](mailto:lian.j@northeastern.edu)
-- [Peter Mink](mailto:mink.p@northeastern.edu)
-- [Curtis Neiderer](mailto:neiderer.c@northeastern.edu)
+- [Jiajin Zhou]
+- [Jie Lian]
+- [Peter Mink]
+- [Curtis Neiderer]
 - Contributors welcome!
